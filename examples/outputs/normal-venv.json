@@ -1,0 +1,82 @@
+{
+  "status": "completed",
+  "reason_code": "model_finished",
+  "reason": "方案已保存",
+  "task_id": "normal-001",
+  "version": 1,
+  "run_id": "d9ff61b4067644c893fb11828c8ab3e5",
+  "plan": {
+    "assets": [
+      {
+        "id": "campus-green-01",
+        "tags": [
+          "校园",
+          "环保",
+          "低碳"
+        ],
+        "title": "校园减塑活动资料",
+        "content": "合成资料：设置自带水杯打卡、旧物交换与垃圾分类问答，倡导自愿参与。",
+        "limitations": "仅为合成活动资料，不代表真实成效或数据。"
+      },
+      {
+        "id": "campus-green-02",
+        "tags": [
+          "校园",
+          "环保",
+          "节能"
+        ],
+        "title": "宿舍节能活动资料",
+        "content": "合成资料：组织随手关灯、节水提醒和节能海报征集；避免夸大节约数据。",
+        "limitations": "禁止编造实测节能百分比。"
+      }
+    ],
+    "scripts": [
+      {
+        "id": "premium_video-103-campus-green-01",
+        "format": "premium_video",
+        "asset_ids": [
+          "campus-green-01",
+          "campus-green-02"
+        ],
+        "content": "主题：校园环保\n形式：精制视频\n素材：校园减塑活动资料；宿舍节能活动资料\n开场：提出一个与主题相关的具体问题。\n主体：引用合成素材中的事实，给出可执行的小步骤。\n结尾：邀请用户自愿参与并注明内容为活动建议。",
+        "generator": "mock-deterministic-v1"
+      },
+      {
+        "id": "social_post-103-campus-green-01",
+        "format": "social_post",
+        "asset_ids": [
+          "campus-green-01",
+          "campus-green-02"
+        ],
+        "content": "主题：校园环保\n形式：图文短帖\n素材：校园减塑活动资料；宿舍节能活动资料\n开场：提出一个与主题相关的具体问题。\n主体：引用合成素材中的事实，给出可执行的小步骤。\n结尾：邀请用户自愿参与并注明内容为活动建议。",
+        "generator": "mock-deterministic-v1"
+      }
+    ],
+    "estimate": {
+      "format": "social_post",
+      "script_ids": [
+        "premium_video-103-campus-green-01",
+        "social_post-103-campus-green-01"
+      ],
+      "planned_production_cents": 575,
+      "actual_tool_cost_cents": 175,
+      "estimated_total_cents": 775,
+      "estimated_minutes": 63,
+      "parallel_execution": true,
+      "deadline": "2030-01-15T18:00:00+08:00",
+      "feasible": true,
+      "budget_gap_cents": 0,
+      "time_gap_minutes": 0
+    },
+    "saved": {
+      "saved": true,
+      "path": "examples/runtime-venv/plans/normal-001/v1.json",
+      "version": 1
+    }
+  },
+  "actual_tool_cost_cents": 225,
+  "step_count": 7,
+  "tool_call_count": 7,
+  "errors": [],
+  "cache_hit": false
+}

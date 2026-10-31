@@ -8,6 +8,6 @@ test_tool_failure_is_recorded_and_not_success (test_graph_mock.GraphMockTests.te
 test_versions_and_atomic_plan_save (test_storage.StorageTests.test_versions_and_atomic_plan_save) ... ok
 
 ----------------------------------------------------------------------
-Ran 8 tests in 0.158s
+Ran 8 tests in 0.165s
 
 OK

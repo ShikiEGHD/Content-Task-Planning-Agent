@@ -16,6 +16,12 @@ def parser() -> argparse.ArgumentParser:
     command = argparse.ArgumentParser(description="内容任务规划 Agent（LangGraph CLI）")
     command.add_argument("--input", required=True, help="输入 JSON 文件")
     command.add_argument("--mode", choices=("mock", "cloud"), default=os.getenv("AGENT_MODE", "mock"))
+    command.add_argument("--model", default=os.getenv("DEEPSEEK_MODEL", "deepseek-flash"),
+                         help="云端决策模型名")
+    command.add_argument("--generation-model", default=os.getenv("DEEPSEEK_GENERATION_MODEL", "deepseek-flash"),
+                         help="云端脚本生成模型名")
+    command.add_argument("--base-url", default=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"),
+                         help="云端 API 地址")
     command.add_argument("--data-dir", default="data")
     command.add_argument("--runtime-dir", default="runtime")
     command.add_argument("--trace-dir", default="examples/traces")
@@ -33,10 +39,12 @@ def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     try:
         request = Request.parse(json.loads(Path(args.input).read_text(encoding="utf-8")))
-        config = Config(mode=args.mode, max_steps=args.max_steps,
+        config = Config(mode=args.mode, model=args.model, generation_model=args.generation_model,
+                        max_steps=args.max_steps,
                         max_tool_calls=args.max_tool_calls, concurrency=args.concurrency)
         if args.mode == "cloud":
-            client = DeepSeekClient()
+            client = DeepSeekClient(model=args.model, generation_model=args.generation_model,
+                                    base_url=args.base_url)
         else:
             client = MockModel()
         now = datetime.fromisoformat(args.now.replace("Z", "+00:00")) if args.now else None

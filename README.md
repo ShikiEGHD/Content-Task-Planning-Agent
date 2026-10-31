@@ -25,18 +25,18 @@
 ```text
 .
 ├── README.md
-├── requirements.txt                 # 依赖占位；实现阶段验证后固定版本
-├── .env.example                     # 环境变量草案；程序尚未读取
+├── requirements.txt                 # 已固定 LangGraph/OpenAI SDK 版本
+├── .env.example                     # DeepSeek 云端配置示例（不含密钥）
 ├── .gitignore
 ├── src/
 │   └── content_task_agent/          # 后续放 CLI、LangGraph 图、模型与工具接入
-├── tests/                          # 可执行测试待实现，当前只有测试计划
+├── tests/                          # unittest 测试
 ├── examples/
-│   ├── inputs/                     # 输入格式草案
-│   ├── outputs/                    # 实际运行输出，当前为空
-│   ├── traces/                     # 实际执行记录，当前为空
-│   └── test-results/               # 实际测试结果，当前为空
-├── data/                           # 合成素材、工具费用和耗时表待实现
+│   ├── inputs/                     # 可复现输入场景
+│   ├── outputs/                    # 实际运行输出
+│   ├── traces/                     # JSONL 执行记录
+│   └── test-results/               # 测试结果
+├── data/                           # 合成素材、工具费用和耗时表
 └── docs/
     ├── 00-roadmap.md
     ├── 01-requirements.md
@@ -48,11 +48,18 @@
 
 ## 环境与安装
 
-已验证环境：Python 3.12.2、LangGraph 1.2.10。`requirements.txt` 固定 LangGraph 1.2.10 和云端模式所需的 OpenAI SDK 3.42.0；当前会话尚未完成 OpenAI SDK 安装，因此云端路径仍待验证。
+已验证环境：Python 3.12.2、LangGraph 1.2.10、OpenAI SDK 3.42.0。云端路径的 SDK 已可导入；真实 DeepSeek 请求仍需要用户本机提供 API Key 和可用网络。
+
+推荐安装方式：
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
 
 实现完成后的 README 必须补齐：
 
-1. 经验证的 Python 版本、操作系统和依赖版本。
+1. 经验证的 Python 版本、Windows 环境和依赖版本。
 2. 创建虚拟环境与安装依赖的完整命令。
 3. 云端模式的配置、运行与失败说明。
 4. 不使用密钥、无需网络的离线 Mock 运行命令。

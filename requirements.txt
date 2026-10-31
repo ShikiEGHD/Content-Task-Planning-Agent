@@ -1,3 +1,3 @@
 langgraph==1.2.10
-# 云端模式依赖；Mock 模式和 unittest 不需要网络。
+# Cloud mode dependency; mock mode and unittest do not require a network.
 openai==3.42.0

@@ -1,0 +1,25 @@
+{
+  "status": "incomplete",
+  "reason_code": "model_finished",
+  "reason": "没有找到可用素材，无法生成方案",
+  "task_id": "no-materials-001",
+  "version": 1,
+  "run_id": "d3ec6b7c8d7d442e920d71be017788e2",
+  "plan": {
+    "assets": [],
+    "scripts": [],
+    "estimate": null,
+    "saved": null
+  },
+  "actual_tool_cost_cents": 10,
+  "step_count": 2,
+  "tool_call_count": 2,
+  "errors": [
+    {
+      "tool": "search_materials",
+      "code": "no_materials",
+      "error": "没有匹配的合成素材"
+    }
+  ],
+  "cache_hit": false
+}

@@ -2,7 +2,7 @@
 
 ## 文档状态与来源
 
-依据用户提供的三张考题截图整理。截图为需求来源；本轮任务是建立目录与路线，不是在本轮声称完成考题。用户在对话中确认 Python、LangGraph、CLI、云端 API 与离线 Mock。其余设计为待确认建议。
+依据用户提供的三张考题截图整理。用户已确认 Python、LangGraph、CLI、云端 API 与离线 Mock，以及 DeepSeek/OpenAI SDK、通用模型节点+受控工具分发、生成模型脚本、本地 JSON 幂等、失败单独计费、真实并发、argparse、dataclass 和 unittest。
 
 ## 用户、目标与输入输出
 

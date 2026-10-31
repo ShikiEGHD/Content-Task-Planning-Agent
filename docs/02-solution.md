@@ -8,7 +8,7 @@ P1—P3 已完成离线实现；P4 文档和提交材料正在补齐。完整路
 
 Python、LangGraph 1.2.10、argparse、dataclass、unittest、云端 API 与离线 Mock。云端使用 OpenAI Python SDK 直连 DeepSeek，模型为 deepseek-flash，关闭思考模式；OpenAI SDK 的本地安装和真实 API 调用仍待验证。
 
-## 调用流程草案
+## 调用流程
 
 输入校验 → LangGraph 模型决策节点 → 受控工具执行节点 → 更新状态与 Trace → 再次模型决策 → 完成/未完成。
 
@@ -23,7 +23,7 @@ Python、LangGraph 1.2.10、argparse、dataclass、unittest、云端 API 与离�
 - 两条以上真实模型路径体现不同结果导致不同后续动作。
 - Mock 与云端适配器边界一致，但 Mock 不用于证明真实模型效果。
 
-## 框架使用记录（待实现后补齐）
+## 框架使用记录
 
 | 项目 | 当前记录 |
 |---|---|
@@ -32,7 +32,7 @@ Python、LangGraph 1.2.10、argparse、dataclass、unittest、云端 API 与离�
 | 框架负责 | 图执行、状态传递和路由 |
 | 自行实现 | 业务工具、费用时间、依赖、保存守卫、幂等、错误/上限、Trace |
 | Checkpointer | 未选；跨进程恢复为可选加分 |
-| 模型 SDK/包装器及版本 | OpenAI Python SDK 3.42.0（requirements 已固定；当前环境尚未完成安装验证） |
+| 模型 SDK/包装器及版本 | OpenAI Python SDK 3.42.0（已在项目 `.venv` 导入验证；云端调用仍需本地 Key） |
 
 ## 方法选择记录
 
