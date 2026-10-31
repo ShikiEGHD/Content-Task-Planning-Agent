@@ -6,7 +6,7 @@
 
 ## 当前状态
 
-已完成 P1—P3 的离线实现和证据生成，并已用 DeepSeek `deepseek-flash` 完成一条真实云端正常路径：LangGraph 图、离线 Mock、受控工具、JSON 幂等存储、CLI、Trace 与 unittest。云端故障/替代路径还需第二次真实 API 运行。
+已完成 P1—P3 的离线实现和证据生成，并已用 DeepSeek `deepseek-flash` 完成真实云端正常路径和工具故障路径：LangGraph 图、离线 Mock、受控工具、JSON 幂等存储、CLI、Trace 与 unittest。云端超预算替代方案最终保存路径仍可继续补充。
 
 用户已确认的技术栈：
 
