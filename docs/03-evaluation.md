@@ -2,13 +2,13 @@
 
 ## 当前状态
 
-离线业务代码、Mock 运行和 unittest 已执行；DeepSeek 云端模型尚未使用真实密钥验证，因此云端路径仍明确标为未完成。
+离线业务代码、Mock 运行和 unittest 已执行；DeepSeek `deepseek-flash` 云端正常路径已使用真实 API 验证并保存证据。云端故障路径仍待第二次真实 API 运行。
 
 ## 验收映射
 
 | 编号 | 场景 | 预期 | 实际结果 | 输入/输出/Trace/测试文件 |
 |---|---|---|---|---|
-| R01 | 正常完成 | 符合预算、时间与依赖并保存 | 通过（Mock） | `examples/outputs/normal.json`、`examples/traces/normal-001-v1-3fe32edc34d4458e9f623c7616981d4a.jsonl` |
+| R01 | 正常完成 | 符合预算、时间与依赖并保存 | 通过（Mock + DeepSeek 云端） | Mock：`examples/outputs/normal.json`；云端：`examples/runtime-cloud/index.json`、`examples/runtime-cloud/plans/normal-001/v1.json`、`examples/traces/normal-001-v1-94f7b0b329734f8596c00543551ed0fd.jsonl` |
 | R02 | 缺预算 | 返回缺失字段，不补值 | 通过（CLI 输入校验） | `examples/test-results/missing-budget.stderr` |
 | R03 | 缺截止时间 | 返回缺失字段，不补值 | 通过（CLI 输入校验） | `examples/inputs/missing-deadline.json`、`examples/test-results/missing-deadline.stderr` |
 | R04 | 一次工具失败 | 模型调整或停止，保留成功结果 | 通过（Mock 故障注入；失败计费并停止重试） | `examples/outputs/tool-failure.json`、`examples/traces/failure-001-v1-d5e25ac75f4f4130a8dae7b64d6b027f.jsonl` |
@@ -17,7 +17,7 @@
 | R07 | 达到上限 | 明确未完成并终止 | 通过（故障场景最终为 step_limit） | `examples/outputs/tool-failure.json` |
 | R08 | 素材不足 | 识别不足，换方案或停止 | 通过（Mock 停止并保留错误） | `examples/inputs/no-materials.json`、`examples/outputs/no-materials.json` |
 | R09 | 截止时间不可达 | 换方案或报告时间缺口 | 通过（Mock 重规划后报告时间缺口） | `examples/inputs/tight-deadline.json`、`examples/outputs/tight-deadline.json` |
-| R10 | 两条动态路径 | 真实模型因不同工具结果改变行动 | 未完成：云端 API 尚未验证；Mock 路径已验证 | `examples/outputs/normal.json`、`examples/outputs/tool-failure.json` |
+| R10 | 两条动态路径 | 真实模型因不同工具结果改变行动 | 部分完成：云端正常路径已验证；云端故障路径待补，Mock 两条路径已验证 | 云端正常：`examples/traces/normal-001-v1-94f7b0b329734f8596c00543551ed0fd.jsonl`；Mock：`examples/outputs/normal.json`、`examples/outputs/tool-failure.json` |
 
 需求编号见 [01-requirements.md](01-requirements.md)。
 
@@ -35,4 +35,4 @@
 
 ## 失败与限制
 
-限制：DeepSeek 云端 API 尚未用真实密钥验证；OpenAI SDK 3.42.0 和 LangGraph 1.2.10 已在项目 `.venv` 导入验证。Mock 证据不能替代真实模型路径；并行执行目前仅允许同批独立脚本生成，跨进程恢复未实现。
+限制：DeepSeek 云端正常路径已用真实密钥验证；云端工具失败/超预算第二条路径仍需补跑。OpenAI SDK 3.42.0 和 LangGraph 1.2.10 已在项目 `.venv` 导入验证。并行执行目前仅允许同批独立脚本生成，跨进程恢复未实现。

@@ -1,0 +1,166 @@
+{
+  "request": {
+    "task_id": "normal-001",
+    "topic": "校园环保",
+    "budget": 10.0,
+    "deadline": "2030-01-15T18:00:00+08:00"
+  },
+  "version": 1,
+  "assets": [
+    {
+      "id": "campus-green-01",
+      "tags": [
+        "校园",
+        "环保",
+        "低碳"
+      ],
+      "title": "校园减塑活动资料",
+      "content": "合成资料：设置自带水杯打卡、旧物交换与垃圾分类问答，倡导自愿参与。",
+      "limitations": "仅为合成活动资料，不代表真实成效或数据。"
+    },
+    {
+      "id": "campus-green-02",
+      "tags": [
+        "校园",
+        "环保",
+        "节能"
+      ],
+      "title": "宿舍节能活动资料",
+      "content": "合成资料：组织随手关灯、节水提醒和节能海报征集；避免夸大节约数据。",
+      "limitations": "禁止编造实测节能百分比。"
+    }
+  ],
+  "scripts": [
+    {
+      "id": "premium_video-904-campus-green-01",
+      "format": "premium_video",
+      "asset_ids": [
+        "campus-green-01",
+        "campus-green-02"
+      ],
+      "content": "以下为可直接审阅的短片脚本，仅使用所给合成资料，不添加真实数据或成效结论。\n\n**主题**：校园环保\n**成片建议时长**：约50秒\n**素材依据**：campus-green-01、campus-green-02\n**整体口径**：活动为自愿参与；不呈现节约百分比、减塑数量等实测或成效数据\n\n---\n\n**镜头1｜开场（约6秒）**\n- 画面：校园场景空镜或资料标题卡，叠加字幕\n- 字幕：校园环保，从小事开始\n- 旁白：校园里的环保，可以从一件件小事做起。\n- 素材依据：campus-green-01 标签“校园、环保、低碳”\n\n**镜头2｜减塑活动（约12秒）**\n- 画面：资料信息卡，逐条显示：自带水杯打卡 / 旧物交换 / 垃圾分类问答\n- 字幕：自愿参与\n- 旁白：这里有一份合成的校园减塑活动资料，设置了自带水杯打卡、旧物交换和垃圾分类问答，倡导大家自愿参与。\n- 素材依据：campus-green-01 内容与限制说明\n\n**镜头3｜宿舍节能（约14秒）**\n- 画面：资料信息卡，逐条显示：随手关灯 / 节水提醒 / 节能海报征集\n- 字幕：节能海报征集\n- 旁白：另一份合成的宿舍节能活动资料，组织了随手关灯、节水提醒和节能海报征集，鼓励从日常习惯入手。\n- 素材依据：campus-green-02 内容\n\n**镜头4｜事实提示（约10秒）**\n- 画面：画面下方固定小字提示条\n- 字幕：资料为合成内容，不代表真实成效或数据\n- 旁白：需要说明的是，以上均为合成活动资料，不代表真实成效，也不提供实测节能数据。\n- 素材依据：两份素材的 limitations\n\n**镜头5｜收尾（约8秒）**\n- 画面：两张资料卡并列，片尾字幕\n- 字幕：自愿参与 · 从身边做起\n- 旁白：环保活动重在参与，从身边的小事开始。\n- 素材依据：campus-green-01 的“自愿参与”口径\n\n---\n\n**使用提醒**\n- 不添加“减少多少塑料”“节约多少电”等未提供的数字。\n- 不将活动名称表述为“已取得成效”或“全校覆盖”。\n- 如需引用画面外的真实数据，须另行核实并补充来源。",
+      "generator": "deepseek-flash"
+    },
+    {
+      "id": "social_post-264-campus-green-01",
+      "format": "social_post",
+      "asset_ids": [
+        "campus-green-01",
+        "campus-green-02"
+      ],
+      "content": "【校园环保｜社交短帖脚本】\n\n**画面/素材**\n- 使用 campus-green-01：校园减塑活动资料画面（自带水杯打卡、旧物交换、垃圾分类问答）\n- 使用 campus-green-02：宿舍节能活动资料画面（随手关灯、节水提醒、节能海报征集）\n\n**字幕/配文**\n校园环保，从身边小事开始：\n自带水杯打卡、旧物交换、垃圾分类问答，\n还有随手关灯、节水提醒、节能海报征集。\n以上为合成活动资料，倡导自愿参与，不代表真实成效或数据。\n\n**发布提示**\n不标注具体节约数据，不夸大活动效果；如需引用，请注明“合成资料”。",
+      "generator": "deepseek-flash"
+    }
+  ],
+  "estimate": {
+    "format": "social_post",
+    "script_ids": [
+      "premium_video-904-campus-green-01",
+      "social_post-264-campus-green-01"
+    ],
+    "planned_production_cents": 575,
+    "actual_tool_cost_cents": 150,
+    "estimated_total_cents": 750,
+    "estimated_minutes": 63,
+    "parallel_execution": true,
+    "deadline": "2030-01-15T18:00:00+08:00",
+    "feasible": true,
+    "budget_gap_cents": 0,
+    "time_gap_minutes": 0
+  },
+  "actual_cost_cents": 175,
+  "events": [
+    {
+      "event": "validated",
+      "status": "succeeded"
+    },
+    {
+      "call_id": "call_00_dpjKexruA6nfTzT6D08x4668",
+      "tool": "search_materials",
+      "status": "succeeded",
+      "result": {
+        "items": [
+          {
+            "id": "campus-green-01",
+            "tags": [
+              "校园",
+              "环保",
+              "低碳"
+            ],
+            "title": "校园减塑活动资料",
+            "content": "合成资料：设置自带水杯打卡、旧物交换与垃圾分类问答，倡导自愿参与。",
+            "limitations": "仅为合成活动资料，不代表真实成效或数据。"
+          },
+          {
+            "id": "campus-green-02",
+            "tags": [
+              "校园",
+              "环保",
+              "节能"
+            ],
+            "title": "宿舍节能活动资料",
+            "content": "合成资料：组织随手关灯、节水提醒和节能海报征集；避免夸大节约数据。",
+            "limitations": "禁止编造实测节能百分比。"
+          }
+        ],
+        "count": 2,
+        "query": "校园环保"
+      },
+      "charged_cents": 50
+    },
+    {
+      "call_id": "call_00_rZS0R4YTvtg3yKY1TCP90267",
+      "tool": "generate_script",
+      "status": "succeeded",
+      "result": {
+        "id": "premium_video-904-campus-green-01",
+        "format": "premium_video",
+        "asset_ids": [
+          "campus-green-01",
+          "campus-green-02"
+        ],
+        "content": "以下为可直接审阅的短片脚本，仅使用所给合成资料，不添加真实数据或成效结论。\n\n**主题**：校园环保\n**成片建议时长**：约50秒\n**素材依据**：campus-green-01、campus-green-02\n**整体口径**：活动为自愿参与；不呈现节约百分比、减塑数量等实测或成效数据\n\n---\n\n**镜头1｜开场（约6秒）**\n- 画面：校园场景空镜或资料标题卡，叠加字幕\n- 字幕：校园环保，从小事开始\n- 旁白：校园里的环保，可以从一件件小事做起。\n- 素材依据：campus-green-01 标签“校园、环保、低碳”\n\n**镜头2｜减塑活动（约12秒）**\n- 画面：资料信息卡，逐条显示：自带水杯打卡 / 旧物交换 / 垃圾分类问答\n- 字幕：自愿参与\n- 旁白：这里有一份合成的校园减塑活动资料，设置了自带水杯打卡、旧物交换和垃圾分类问答，倡导大家自愿参与。\n- 素材依据：campus-green-01 内容与限制说明\n\n**镜头3｜宿舍节能（约14秒）**\n- 画面：资料信息卡，逐条显示：随手关灯 / 节水提醒 / 节能海报征集\n- 字幕：节能海报征集\n- 旁白：另一份合成的宿舍节能活动资料，组织了随手关灯、节水提醒和节能海报征集，鼓励从日常习惯入手。\n- 素材依据：campus-green-02 内容\n\n**镜头4｜事实提示（约10秒）**\n- 画面：画面下方固定小字提示条\n- 字幕：资料为合成内容，不代表真实成效或数据\n- 旁白：需要说明的是，以上均为合成活动资料，不代表真实成效，也不提供实测节能数据。\n- 素材依据：两份素材的 limitations\n\n**镜头5｜收尾（约8秒）**\n- 画面：两张资料卡并列，片尾字幕\n- 字幕：自愿参与 · 从身边做起\n- 旁白：环保活动重在参与，从身边的小事开始。\n- 素材依据：campus-green-01 的“自愿参与”口径\n\n---\n\n**使用提醒**\n- 不添加“减少多少塑料”“节约多少电”等未提供的数字。\n- 不将活动名称表述为“已取得成效”或“全校覆盖”。\n- 如需引用画面外的真实数据，须另行核实并补充来源。",
+        "generator": "deepseek-flash"
+      },
+      "charged_cents": 50
+    },
+    {
+      "call_id": "call_01_yxR8Kfxz3kzqX9fTONSY5286",
+      "tool": "generate_script",
+      "status": "succeeded",
+      "result": {
+        "id": "social_post-264-campus-green-01",
+        "format": "social_post",
+        "asset_ids": [
+          "campus-green-01",
+          "campus-green-02"
+        ],
+        "content": "【校园环保｜社交短帖脚本】\n\n**画面/素材**\n- 使用 campus-green-01：校园减塑活动资料画面（自带水杯打卡、旧物交换、垃圾分类问答）\n- 使用 campus-green-02：宿舍节能活动资料画面（随手关灯、节水提醒、节能海报征集）\n\n**字幕/配文**\n校园环保，从身边小事开始：\n自带水杯打卡、旧物交换、垃圾分类问答，\n还有随手关灯、节水提醒、节能海报征集。\n以上为合成活动资料，倡导自愿参与，不代表真实成效或数据。\n\n**发布提示**\n不标注具体节约数据，不夸大活动效果；如需引用，请注明“合成资料”。",
+        "generator": "deepseek-flash"
+      },
+      "charged_cents": 50
+    },
+    {
+      "call_id": "call_00_UbvgogvVWqA3MJpDiGEO6814",
+      "tool": "estimate_cost",
+      "status": "succeeded",
+      "result": {
+        "format": "social_post",
+        "script_ids": [
+          "premium_video-904-campus-green-01",
+          "social_post-264-campus-green-01"
+        ],
+        "planned_production_cents": 575,
+        "actual_tool_cost_cents": 150,
+        "estimated_total_cents": 750,
+        "estimated_minutes": 63,
+        "parallel_execution": true,
+        "deadline": "2030-01-15T18:00:00+08:00",
+        "feasible": true,
+        "budget_gap_cents": 0,
+        "time_gap_minutes": 0
+      },
+      "charged_cents": 25
+    }
+  ]
+}

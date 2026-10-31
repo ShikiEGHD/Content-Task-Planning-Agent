@@ -6,7 +6,7 @@
 
 ## 当前状态
 
-已完成 P1—P3 的离线实现和证据生成：LangGraph 图、离线 Mock、受控工具、JSON 幂等存储、CLI、Trace 与 unittest。DeepSeek 云端适配器已写入，但尚未使用真实 API Key 验证。
+已完成 P1—P3 的离线实现和证据生成，并已用 DeepSeek `deepseek-flash` 完成一条真实云端正常路径：LangGraph 图、离线 Mock、受控工具、JSON 幂等存储、CLI、Trace 与 unittest。云端故障/替代路径还需第二次真实 API 运行。
 
 用户已确认的技术栈：
 
