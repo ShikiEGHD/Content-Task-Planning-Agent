@@ -1,0 +1,13 @@
+test_config_limits (test_contracts.ContractTests.test_config_limits) ... ok
+test_request_requires_timezone_and_converts_money (test_contracts.ContractTests.test_request_requires_timezone_and_converts_money) ... ok
+test_tool_schema_requires_reason (test_contracts.ContractTests.test_tool_schema_requires_reason) ... ok
+test_unknown_fields_and_missing_input_are_rejected (test_contracts.ContractTests.test_unknown_fields_and_missing_input_are_rejected) ... ok
+test_budget_replans_from_premium_to_social_and_saves (test_graph_mock.GraphMockTests.test_budget_replans_from_premium_to_social_and_saves) ... ok
+test_changed_request_creates_new_version (test_graph_mock.GraphMockTests.test_changed_request_creates_new_version) ... ok
+test_tool_failure_is_recorded_and_not_success (test_graph_mock.GraphMockTests.test_tool_failure_is_recorded_and_not_success) ... ok
+test_versions_and_atomic_plan_save (test_storage.StorageTests.test_versions_and_atomic_plan_save) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.158s
+
+OK

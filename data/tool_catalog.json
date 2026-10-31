@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "currency": "模拟单位",
+  "cents_per_unit": 100,
+  "max_workers": 3,
+  "fees": {
+    "search_materials": {
+      "success": 50,
+      "failure": 10,
+      "minutes": 2,
+      "failure_minutes": 1
+    },
+    "generate_script": {
+      "success": 50,
+      "failure": 25,
+      "minutes": 8,
+      "failure_minutes": 3
+    },
+    "estimate_cost": {
+      "success": 25,
+      "failure": 10,
+      "minutes": 1,
+      "failure_minutes": 1
+    },
+    "save_plan": {
+      "success": 25,
+      "failure": 10,
+      "minutes": 1,
+      "failure_minutes": 1
+    }
+  },
+  "review_cents": 50,
+  "publish_cents": 50,
+  "review_minutes": 15,
+  "publish_minutes": 10,
+  "formats": {
+    "premium_video": {
+      "production_cents": 1000,
+      "production_minutes": 120,
+      "label": "精制视频"
+    },
+    "social_post": {
+      "production_cents": 575,
+      "production_minutes": 30,
+      "label": "图文短帖"
+    },
+    "carousel": {
+      "production_cents": 650,
+      "production_minutes": 45,
+      "label": "多图轮播"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+# 本地环境与密钥
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+
+# Python 与测试缓存
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+dist/
+
+# 编辑器与系统临时文件
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+
+# 本地运行数据；经筛选的验收材料应显式保存到 examples/ 并纳入 Git。
+runtime/

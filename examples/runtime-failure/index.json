@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "tasks": {
+    "failure-001": [
+      {
+        "version": 1,
+        "fingerprint": "47a9f1fd885feebb5d83a9df042dbc2c77a67c82ad01502dcfe999794ce94d54",
+        "result": {
+          "status": "incomplete",
+          "reason_code": "step_limit",
+          "reason": "达到 Agent 步数上限，保留已完成结果",
+          "task_id": "failure-001",
+          "version": 1,
+          "run_id": "d5e25ac75f4f4130a8dae7b64d6b027f",
+          "plan": {
+            "assets": [
+              {
+                "id": "campus-green-01",
+                "tags": [
+                  "校园",
+                  "环保",
+                  "低碳"
+                ],
+                "title": "校园减塑活动资料",
+                "content": "合成资料：设置自带水杯打卡、旧物交换与垃圾分类问答，倡导自愿参与。",
+                "limitations": "仅为合成活动资料，不代表真实成效或数据。"
+              },
+              {
+                "id": "campus-green-02",
+                "tags": [
+                  "校园",
+                  "环保",
+                  "节能"
+                ],
+                "title": "宿舍节能活动资料",
+                "content": "合成资料：组织随手关灯、节水提醒和节能海报征集；避免夸大节约数据。",
+                "limitations": "禁止编造实测节能百分比。"
+              }
+            ],
+            "scripts": [],
+            "estimate": null,
+            "saved": null
+          },
+          "actual_tool_cost_cents": 325,
+          "step_count": 12,
+          "tool_call_count": 12,
+          "errors": [
+            {
+              "tool": "generate_script",
+              "code": "injected_failure",
+              "error": "故障注入：generate_script"
+            },
+            {
+              "tool": "generate_script",
+              "code": "injected_failure",
+              "error": "故障注入：generate_script"
+            },
+            {
+              "tool": "generate_script",
+              "code": "injected_failure",
+              "error": "故障注入：generate_script"
+            },
+            {
+              "tool": "generate_script",
+              "code": "injected_failure",
+              "error": "故障注入：generate_script"
+            },
+            {
+              "tool": "generate_script",
+              "code": "injected_failure",
+              "error": "故障注入：generate_script"
+            },
+            {
+              "tool": "generate_script",
+              "code": "injected_failure",
+              "error": "故障注入：generate_script"
+            },
+            {
+              "tool": "generate_script",
+              "code": "injected_failure",
+              "error": "故障注入：generate_script"
+            },
+            {
+              "tool": "generate_script",
+              "code": "injected_failure",
+              "error": "故障注入：generate_script"
+            },
+            {
+              "tool": "generate_script",
+              "code": "injected_failure",
+              "error": "故障注入：generate_script"
+            },
+            {
+              "tool": "generate_script",
+              "code": "injected_failure",
+              "error": "故障注入：generate_script"
+            },
+            {
+              "tool": "generate_script",
+              "code": "injected_failure",
+              "error": "故障注入：generate_script"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
