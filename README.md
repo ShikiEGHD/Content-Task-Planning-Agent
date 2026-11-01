@@ -101,6 +101,6 @@ CLI 参数优先于 `DEEPSEEK_MODEL`、`DEEPSEEK_GENERATION_MODEL`、`DEEPSEEK_B
 
 ## 最终提交
 
-提交题号 2、GitHub URL、最后一次提交后的完整 SHA；私有仓库给指定评审账号读取权限。
-视频为补充，不能替代代码。真实工时和个人修改由用户确认后填写，不编造。
-本轮修复尚未推送 GitHub；最终个人记录和发布检查仍待完成。
+提交题号 2、公开仓库 URL `https://github.com/ShikiEGHD/Content-Task-Planning-Agent`，以及完成推送后通过 `git rev-parse HEAD` 获取的完整 SHA。公开仓库可直接供评审读取。
+[个人贡献与 AI 分工](docs/04-ai-usage.md)及[学习复盘](docs/05-retrospective.md)已依据本人说明整理；实际投入时间未精确记录，不补写未经确认的数字。
+代码、文档及验证材料均在本仓库，评审入口为 [评估与证据](docs/03-evaluation.md)。
