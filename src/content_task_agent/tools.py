@@ -1,13 +1,15 @@
 from __future__ import annotations
 
-import json
+import copy
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from dataclasses import dataclass
-from datetime import datetime, timedelta
+from dataclasses import dataclass, field
+from datetime import datetime
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
-from .contracts import Call, Request, timestamp
+from .accounting import calculate_estimate, dependency_fingerprint, scheduled_minutes
+from .contracts import Call, Request, digest
 from .models import ModelClient, ModelError
 from .storage import JsonStore, StorageError
 
@@ -30,6 +32,8 @@ class ToolContext:
     fail_tools: set[str]
     clock: datetime
     concurrency: int = 3
+    elapsed_minutes: int = 0
+    available_assets: list[dict[str, Any]] = field(default_factory=list)
 
     def fee(self, name: str, success: bool) -> int:
         key = "success" if success else "failure"
@@ -62,8 +66,10 @@ def search_materials(context: ToolContext, args: dict[str, Any]) -> dict[str, An
 
 def generate_script(context: ToolContext, args: dict[str, Any]) -> dict[str, Any]:
     name = "generate_script"
-    asset_by_id = {item["id"]: item for item in context.assets_catalog}
-    assets = [asset_by_id[asset_id] for asset_id in args["asset_ids"] if asset_id in asset_by_id]
+    asset_by_id = {item["id"]: item for item in context.available_assets}
+    if any(asset_id not in asset_by_id for asset_id in args["asset_ids"]):
+        raise ToolFailure("脚本生成引用了未检索到的素材", code="missing_assets")
+    assets = [asset_by_id[asset_id] for asset_id in args["asset_ids"]]
     if not assets:
         raise ToolFailure("脚本生成缺少有效素材", code="missing_assets")
     _fail_if_injected(context, name)
@@ -72,58 +78,23 @@ def generate_script(context: ToolContext, args: dict[str, Any]) -> dict[str, Any
             context.request.topic, assets, args["format"])
     except (ModelError, TimeoutError) as exc:
         raise ToolFailure(str(exc), code="generation_failed") from exc
-    script_id = f"{args['format']}-{len(content)}-{assets[0]['id']}"
+    script_id = f"{args['format']}-{digest({'assets': args['asset_ids'], 'content': content})[:16]}"
     return {"id": script_id, "format": args["format"], "asset_ids": args["asset_ids"],
-            "content": content, "generator": context.generation_client.model_name}
+            "content": content, "generator": getattr(context.generation_client, "generation_model",
+                                                     context.generation_client.model_name)}
 
 
-def _parse_plan_format(scripts: list[dict[str, Any]]) -> str:
-    if not scripts:
-        raise ToolFailure("没有可估算的脚本", code="missing_script")
-    # The latest successful script is the active candidate. A lower-cost replacement can supersede it.
-    return scripts[-1]["format"]
-
-
-def _critical_path_minutes(format_name: str, catalog: dict[str, Any], parallel: bool) -> int:
-    format_item = catalog["formats"][format_name]
-    production = int(format_item["production_minutes"])
-    review = int(catalog["review_minutes"])
-    publish = int(catalog["publish_minutes"])
-    if parallel:
-        # Asset search and script generation are independent preparation tasks; their max duration
-        # is included before the dependent production/review/publish chain.
-        preparation = max(int(catalog["fees"]["search_materials"]["minutes"]),
-                          int(catalog["fees"]["generate_script"]["minutes"]))
-        return preparation + production + review + publish
-    return (int(catalog["fees"]["search_materials"]["minutes"])
-            + int(catalog["fees"]["generate_script"]["minutes"])
-            + production + review + publish)
-
-
-def estimate_cost(context: ToolContext, args: dict[str, Any], scripts: list[dict[str, Any]],
+def estimate_cost(context: ToolContext, args: dict[str, Any], plan: dict[str, Any],
                   actual_cost_cents: int) -> dict[str, Any]:
-    name = "estimate_cost"
-    _fail_if_injected(context, name)
-    selected = [script for script in scripts if script["id"] in args["script_ids"]]
-    format_name = _parse_plan_format(selected)
-    format_item = context.catalog["formats"][format_name]
-    planned_cents = int(format_item["production_cents"]) + int(context.catalog["review_minutes"])
-    planned_cents += int(context.catalog["publish_minutes"])
-    total_estimated = actual_cost_cents + planned_cents
-    minutes = _critical_path_minutes(format_name, context.catalog, parallel=True)
-    deadline = timestamp(context.request.deadline)
-    feasible = total_estimated <= context.request.budget_cents and (
-        context.clock + timedelta(minutes=minutes) <= deadline)
-    return {
-        "format": format_name, "script_ids": args["script_ids"],
-        "planned_production_cents": int(format_item["production_cents"]),
-        "actual_tool_cost_cents": actual_cost_cents,
-        "estimated_total_cents": total_estimated,
-        "estimated_minutes": minutes, "parallel_execution": True,
-        "deadline": context.request.deadline, "feasible": feasible,
-        "budget_gap_cents": max(total_estimated - context.request.budget_cents, 0),
-        "time_gap_minutes": max(int((context.clock + timedelta(minutes=minutes) - deadline).total_seconds() // 60), 0),
-    }
+    _fail_if_injected(context, "estimate_cost")
+    try:
+        return calculate_estimate(
+            context.request, context.catalog, plan, args["script_ids"],
+            actual_cost_cents=actual_cost_cents, elapsed_minutes=context.elapsed_minutes,
+            started_at=context.clock, concurrency=context.concurrency,
+            pending_tools=("estimate_cost", "save_plan"), phase="quoted")
+    except ValueError as exc:
+        raise ToolFailure(str(exc), code="invalid_dependencies") from exc
 
 
 def save_plan(context: ToolContext, args: dict[str, Any], plan: dict[str, Any]) -> dict[str, Any]:
@@ -133,10 +104,38 @@ def save_plan(context: ToolContext, args: dict[str, Any], plan: dict[str, Any]) 
     if not estimate.get("feasible"):
         raise ToolFailure("当前估算不满足预算或截止时间，拒绝保存", code="plan_not_feasible")
     try:
-        path = context.storage.save(context.request.task_id, context.version, plan)
+        script_ids = estimate["script_ids"]
+        if estimate.get("dependency_fingerprint") != dependency_fingerprint(
+                context.request, context.catalog, plan, script_ids):
+            raise ToolFailure("方案依赖已变化，必须重新估算", code="stale_estimate")
+        current = calculate_estimate(
+            context.request, context.catalog, plan, script_ids,
+            actual_cost_cents=plan["actual_cost_cents"], elapsed_minutes=context.elapsed_minutes,
+            started_at=context.clock, concurrency=context.concurrency,
+            pending_tools=("save_plan",), phase="save_guard")
+    except (ValueError, KeyError) as exc:
+        raise ToolFailure(str(exc), code="invalid_dependencies") from exc
+    if not current["feasible"]:
+        raise ToolFailure("保存前重算发现预算或时间超限，必须重新规划", code="plan_not_feasible")
+    # Successful persistence includes this save's fee and duration once, not twice.
+    current["actual_tool_cost_cents"] += current["pending_tool_cost_cents"]
+    current["elapsed_planning_minutes"] += current["pending_tool_minutes"]
+    current["pending_tool_cost_cents"] = current["pending_tool_minutes"] = 0
+    current["pending_tools"] = []
+    current["phase"] = "saved"
+    current["estimated_remaining_minutes"] = current["estimated_minutes"] - current["elapsed_planning_minutes"]
+    saved_plan = copy.deepcopy(plan)
+    saved_plan.update(estimate=current, actual_cost_cents=current["actual_tool_cost_cents"],
+                      elapsed_planning_minutes=current["elapsed_planning_minutes"],
+                      selected_script_ids=script_ids)
+    saved_plan["events"].append({"tool": "save_plan", "status": "succeeded",
+                                 "charged_cents": context.fee(name, True),
+                                 "duration_minutes": context.minutes(name, True)})
+    try:
+        path = context.storage.save(context.request.task_id, context.version, saved_plan)
     except StorageError as exc:
         raise ToolFailure(str(exc), code="save_failed") from exc
-    return {"saved": True, "path": path, "version": context.version}
+    return {"saved": True, "path": path, "version": context.version, "estimate": current}
 
 
 def execute_call(context: ToolContext, call: Call, plan: dict[str, Any],
@@ -146,7 +145,7 @@ def execute_call(context: ToolContext, call: Call, plan: dict[str, Any],
     elif call.name == "generate_script":
         result = generate_script(context, call.arguments)
     elif call.name == "estimate_cost":
-        result = estimate_cost(context, call.arguments, plan.get("scripts", []), actual_cost_cents)
+        result = estimate_cost(context, call.arguments, plan, actual_cost_cents)
     elif call.name == "save_plan":
         result = save_plan(context, call.arguments, plan)
     elif call.name == "finish_task":
@@ -159,7 +158,7 @@ def execute_call(context: ToolContext, call: Call, plan: dict[str, Any],
 def execute_calls(context: ToolContext, calls: list[Call], plan: dict[str, Any],
                   actual_cost_cents: int) -> list[dict[str, Any]]:
     if any(call.name in {"estimate_cost", "save_plan", "finish_task"} for call in calls) and len(calls) > 1:
-        raise ToolFailure("估算、保存或结束动作必须单独执行", code="unsafe_batch")
+        return [_rejected(call, "估算、保存或结束动作必须单独执行") for call in calls]
     if len(calls) <= 1:
         results = []
         for call in calls:
@@ -167,24 +166,41 @@ def execute_calls(context: ToolContext, calls: list[Call], plan: dict[str, Any],
         return results
     # Only independent generation calls are run concurrently. The state update remains serialized.
     if not all(call.name == "generate_script" for call in calls):
-        raise ToolFailure("同批只允许并发生成脚本", code="unsafe_batch")
+        return [_rejected(call, "同批只允许并发生成独立脚本") for call in calls]
     results: list[dict[str, Any]] = []
     max_workers = min(len(calls), context.concurrency, context.catalog.get("max_workers", 3))
     with ThreadPoolExecutor(max_workers=max_workers) as pool:
         futures = {pool.submit(_execute_record, context, call, plan, actual_cost_cents): call for call in calls}
         for future in as_completed(futures):
             results.append(future.result())
-    return results
+    by_id = {record["call_id"]: record for record in results}
+    return [by_id[call.id] for call in calls]
+
+
+def _rejected(call: Call, message: str) -> dict:
+    return {"call_id": call.id, "tool": call.name, "status": "failed",
+            "error_code": "unsafe_batch", "error": message,
+            "charged_cents": 0, "duration_minutes": 0, "wall_seconds": 0}
+
+
+def batch_minutes(context: ToolContext, records: list[dict]) -> int:
+    return scheduled_minutes([record.get("duration_minutes", 0) for record in records],
+                             min(context.concurrency, context.catalog.get("max_workers", 3)))
 
 
 def _execute_record(context: ToolContext, call: Call, plan: dict[str, Any],
                     actual_cost_cents: int) -> dict[str, Any]:
+    started = time.perf_counter()
     try:
         result, _ = execute_call(context, call, plan, actual_cost_cents)
         charged = context.fee(call.name, True) if call.name in context.catalog["fees"] else 0
         return {"call_id": call.id, "tool": call.name, "status": "succeeded",
-                "result": result, "charged_cents": charged}
+                "result": result, "charged_cents": charged,
+                "duration_minutes": context.minutes(call.name, True) if call.name in context.catalog["fees"] else 0,
+                "wall_seconds": round(time.perf_counter() - started, 6)}
     except ToolFailure as exc:
         charged = context.fee(call.name, False) if call.name in context.catalog["fees"] else 0
         return {"call_id": call.id, "tool": call.name, "status": "failed",
-                "error_code": exc.code, "error": str(exc), "charged_cents": charged}
+                "error_code": exc.code, "error": str(exc), "charged_cents": charged,
+                "duration_minutes": context.minutes(call.name, False) if call.name in context.catalog["fees"] else 0,
+                "wall_seconds": round(time.perf_counter() - started, 6)}

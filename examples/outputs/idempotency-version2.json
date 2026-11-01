@@ -1,57 +1,81 @@
 {
+  "accounting_version": "2",
+  "mode": "mock",
+  "model": "mock-deterministic-v1",
+  "currency": "æ¨¡æ‹Ÿå•ä½",
+  "cents_per_unit": 100,
   "status": "completed",
   "reason_code": "model_finished",
-  "reason": "·½°¸ÒÑ±£´æ",
+  "reason": "æ–¹æ¡ˆå·²ä¿å­˜",
   "task_id": "normal-001",
   "version": 2,
-  "run_id": "303a5dcb27d44b8d9f41eb92ee7ecaf9",
+  "run_id": "1319c3c971c24b679130ed6fd309d434",
   "plan": {
     "assets": [
       {
         "id": "campus-green-01",
         "tags": [
-          "Ğ£Ô°",
-          "»·±£",
-          "µÍÌ¼"
+          "æ ¡å›­",
+          "ç¯ä¿",
+          "ä½ç¢³"
         ],
-        "title": "Ğ£Ô°¼õËÜ»î¶¯×ÊÁÏ",
-        "content": "ºÏ³É×ÊÁÏ£ºÉèÖÃ×Ô´øË®±­´ò¿¨¡¢¾ÉÎï½»»»ÓëÀ¬»ø·ÖÀàÎÊ´ğ£¬³«µ¼×ÔÔ¸²ÎÓë¡£",
-        "limitations": "½öÎªºÏ³É»î¶¯×ÊÁÏ£¬²»´ú±íÕæÊµ³ÉĞ§»òÊı¾İ¡£"
+        "title": "æ ¡å›­å‡å¡‘æ´»åŠ¨èµ„æ–™",
+        "content": "åˆæˆèµ„æ–™ï¼šè®¾ç½®è‡ªå¸¦æ°´æ¯æ‰“å¡ã€æ—§ç‰©äº¤æ¢ä¸åƒåœ¾åˆ†ç±»é—®ç­”ï¼Œå€¡å¯¼è‡ªæ„¿å‚ä¸ã€‚",
+        "limitations": "ä»…ä¸ºåˆæˆæ´»åŠ¨èµ„æ–™ï¼Œä¸ä»£è¡¨çœŸå®æˆæ•ˆæˆ–æ•°æ®ã€‚"
       },
       {
         "id": "campus-green-02",
         "tags": [
-          "Ğ£Ô°",
-          "»·±£",
-          "½ÚÄÜ"
+          "æ ¡å›­",
+          "ç¯ä¿",
+          "èŠ‚èƒ½"
         ],
-        "title": "ËŞÉá½ÚÄÜ»î¶¯×ÊÁÏ",
-        "content": "ºÏ³É×ÊÁÏ£º×éÖ¯ËæÊÖ¹ØµÆ¡¢½ÚË®ÌáĞÑºÍ½ÚÄÜº£±¨Õ÷¼¯£»±ÜÃâ¿ä´ó½ÚÔ¼Êı¾İ¡£",
-        "limitations": "½ûÖ¹±àÔìÊµ²â½ÚÄÜ°Ù·Ö±È¡£"
+        "title": "å®¿èˆèŠ‚èƒ½æ´»åŠ¨èµ„æ–™",
+        "content": "åˆæˆèµ„æ–™ï¼šç»„ç»‡éšæ‰‹å…³ç¯ã€èŠ‚æ°´æé†’å’ŒèŠ‚èƒ½æµ·æŠ¥å¾é›†ï¼›é¿å…å¤¸å¤§èŠ‚çº¦æ•°æ®ã€‚",
+        "limitations": "ç¦æ­¢ç¼–é€ å®æµ‹èŠ‚èƒ½ç™¾åˆ†æ¯”ã€‚"
       }
     ],
     "scripts": [
       {
-        "id": "premium_video-103-campus-green-01",
+        "id": "premium_video-e3b762614c5b90ce",
         "format": "premium_video",
         "asset_ids": [
           "campus-green-01",
           "campus-green-02"
         ],
-        "content": "Ö÷Ìâ£ºĞ£Ô°»·±£\nĞÎÊ½£º¾«ÖÆÊÓÆµ\nËØ²Ä£ºĞ£Ô°¼õËÜ»î¶¯×ÊÁÏ£»ËŞÉá½ÚÄÜ»î¶¯×ÊÁÏ\n¿ª³¡£ºÌá³öÒ»¸öÓëÖ÷ÌâÏà¹ØµÄ¾ßÌåÎÊÌâ¡£\nÖ÷Ìå£ºÒıÓÃºÏ³ÉËØ²ÄÖĞµÄÊÂÊµ£¬¸ø³ö¿ÉÖ´ĞĞµÄĞ¡²½Öè¡£\n½áÎ²£ºÑûÇëÓÃ»§×ÔÔ¸²ÎÓë²¢×¢Ã÷ÄÚÈİÎª»î¶¯½¨Òé¡£",
+        "content": "ä¸»é¢˜ï¼šæ ¡å›­ç¯ä¿\nå½¢å¼ï¼šç²¾åˆ¶è§†é¢‘\nç´ æï¼šæ ¡å›­å‡å¡‘æ´»åŠ¨èµ„æ–™ï¼›å®¿èˆèŠ‚èƒ½æ´»åŠ¨èµ„æ–™\nå¼€åœºï¼šæå‡ºä¸€ä¸ªä¸ä¸»é¢˜ç›¸å…³çš„å…·ä½“é—®é¢˜ã€‚\nä¸»ä½“ï¼šå¼•ç”¨åˆæˆç´ æä¸­çš„äº‹å®ï¼Œç»™å‡ºå¯æ‰§è¡Œçš„å°æ­¥éª¤ã€‚\nç»“å°¾ï¼šé‚€è¯·ç”¨æˆ·è‡ªæ„¿å‚ä¸å¹¶æ³¨æ˜å†…å®¹ä¸ºæ´»åŠ¨å»ºè®®ã€‚",
         "generator": "mock-deterministic-v1"
       }
     ],
     "estimate": {
+      "accounting_version": "2",
+      "phase": "saved",
+      "currency": "æ¨¡æ‹Ÿå•ä½",
+      "cents_per_unit": 100,
       "format": "premium_video",
       "script_ids": [
-        "premium_video-103-campus-green-01"
+        "premium_video-e3b762614c5b90ce"
       ],
+      "dependency_fingerprint": "cb0a6b47e358698e8288cae6c97ac9bed630cc0792dfc6f7c00c564b578bb25d",
       "planned_production_cents": 1000,
-      "actual_tool_cost_cents": 100,
-      "estimated_total_cents": 1125,
-      "estimated_minutes": 153,
-      "parallel_execution": true,
+      "planned_review_cents": 50,
+      "planned_publish_cents": 50,
+      "actual_tool_cost_cents": 150,
+      "pending_tool_cost_cents": 0,
+      "pending_tools": [],
+      "estimated_total_cents": 1250,
+      "budget_cents": 2000,
+      "elapsed_planning_minutes": 12,
+      "pending_tool_minutes": 0,
+      "production_minutes": 120,
+      "review_minutes": 15,
+      "publish_minutes": 10,
+      "estimated_minutes": 157,
+      "estimated_remaining_minutes": 145,
+      "parallel_execution": false,
+      "concurrency": 3,
+      "started_at": "2030-01-15T09:00:00+08:00",
+      "expected_completion_at": "2030-01-15T11:37:00+08:00",
       "deadline": "2030-01-15T18:00:00+08:00",
       "feasible": true,
       "budget_gap_cents": 0,
@@ -59,11 +83,48 @@
     },
     "saved": {
       "saved": true,
-      "path": "examples/runtime-idempotency-20261031/plans/normal-001/v2.json",
-      "version": 2
+      "path": "examples/runs/mock-20261101T030836Z-9d698998/idempotency/plans/normal-001/v2.json",
+      "version": 2,
+      "estimate": {
+        "accounting_version": "2",
+        "phase": "saved",
+        "currency": "æ¨¡æ‹Ÿå•ä½",
+        "cents_per_unit": 100,
+        "format": "premium_video",
+        "script_ids": [
+          "premium_video-e3b762614c5b90ce"
+        ],
+        "dependency_fingerprint": "cb0a6b47e358698e8288cae6c97ac9bed630cc0792dfc6f7c00c564b578bb25d",
+        "planned_production_cents": 1000,
+        "planned_review_cents": 50,
+        "planned_publish_cents": 50,
+        "actual_tool_cost_cents": 150,
+        "pending_tool_cost_cents": 0,
+        "pending_tools": [],
+        "estimated_total_cents": 1250,
+        "budget_cents": 2000,
+        "elapsed_planning_minutes": 12,
+        "pending_tool_minutes": 0,
+        "production_minutes": 120,
+        "review_minutes": 15,
+        "publish_minutes": 10,
+        "estimated_minutes": 157,
+        "estimated_remaining_minutes": 145,
+        "parallel_execution": false,
+        "concurrency": 3,
+        "started_at": "2030-01-15T09:00:00+08:00",
+        "expected_completion_at": "2030-01-15T11:37:00+08:00",
+        "deadline": "2030-01-15T18:00:00+08:00",
+        "feasible": true,
+        "budget_gap_cents": 0,
+        "time_gap_minutes": 0
+      }
     }
   },
   "actual_tool_cost_cents": 150,
+  "elapsed_planning_minutes": 12,
+  "execution_wall_seconds": 0.024397,
+  "trace_path": "examples\\traces\\mock-20261101T030836Z-9d698998\\normal-001-v2-1319c3c971c24b679130ed6fd309d434.jsonl",
   "step_count": 5,
   "tool_call_count": 5,
   "errors": [],

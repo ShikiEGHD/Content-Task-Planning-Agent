@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "tasks": {
+    "normal-001": [
+      {
+        "version": 1,
+        "fingerprint": "fb42691421eef04bea9c02e6f9f8260f55dd55f21eae25ce61595f3568dc0327",
+        "result": {
+          "accounting_version": "2",
+          "mode": "cloud",
+          "model": "deepseek-flash",
+          "currency": "模拟单位",
+          "cents_per_unit": 100,
+          "status": "completed",
+          "reason_code": "model_finished",
+          "reason": "校园环保选题已完成规划并保存 v1 方案：选用图文短帖脚本 social_post-5ea618ebd4719176（素材 campus-green-01、campus-green-02），预计总费用 875 分（8.75 模拟单位）在 1000 分预算内，工期约 67 分钟，远早于截止时间；候选多图轮播方案未纳入执行。内容须遵守素材限制，不编造实测成效或节能百分比。",
+          "task_id": "normal-001",
+          "version": 1,
+          "run_id": "aef436afbfd84b84a6db540ae01264f5",
+          "plan": {
+            "assets": [
+              {
+                "id": "campus-green-01",
+                "tags": [
+                  "校园",
+                  "环保",
+                  "低碳"
+                ],
+                "title": "校园减塑活动资料",
+                "content": "合成资料：设置自带水杯打卡、旧物交换与垃圾分类问答，倡导自愿参与。",
+                "limitations": "仅为合成活动资料，不代表真实成效或数据。"
+              },
+              {
+                "id": "campus-green-02",
+                "tags": [
+                  "校园",
+                  "环保",
+                  "节能"
+                ],
+                "title": "宿舍节能活动资料",
+                "content": "合成资料：组织随手关灯、节水提醒和节能海报征集；避免夸大节约数据。",
+                "limitations": "禁止编造实测节能百分比。"
+              }
+            ],
+            "scripts": [
+              {
+                "id": "social_post-5ea618ebd4719176",
+                "format": "social_post",
+                "asset_ids": [
+                  "campus-green-01",
+                  "campus-green-02"
+                ],
+                "content": "【校园环保｜社交短文案脚本】\n\n画面/配图建议：\n- 图1：自带水杯打卡台（标注“示意画面”）\n- 图2：旧物交换桌（标注“示意画面”）\n- 图3：垃圾分类问答牌（标注“示意画面”）\n\n口播/正文：\n校园环保可以从身边小事开始。资料里提到，可以设置自带水杯打卡、旧物交换和垃圾分类问答，倡导大家自愿参与；宿舍里也可以做随手关灯、节水提醒和节能海报征集。以上为合成活动资料，具体安排以学校实际通知为准，不夸大节约数据。\n\n字幕要点：\n- 自带水杯打卡｜自愿参与\n- 旧物交换｜按需取用\n- 垃圾分类问答｜学习为主\n- 宿舍节能｜关灯节水提醒\n\n发布备注：\n内容依据合成活动资料整理，不代表真实成效或数据；不编造实测节能百分比，活动细节请以校方通知为准。",
+                "generator": "deepseek-flash"
+              },
+              {
+                "id": "carousel-3917a894828f93cd",
+                "format": "carousel",
+                "asset_ids": [
+                  "campus-green-01",
+                  "campus-green-02"
+                ],
+                "content": "# 校园环保轮播脚本（草稿）\n\n> 素材说明：以下内容基于两条合成资料，不含真实成效或数据。\n\n---\n\n**【P1｜封面】**\n画面：campus-green-01 素材标题图\n主标题：校园环保，从小事开始\n副标题：减塑 · 节能 · 自愿参与\n\n---\n\n**【P2｜减塑行动】**\n来源：campus-green-01\n画面：打卡与旧物交换示意图\n文案：\n- 自带水杯打卡\n- 旧物交换\n- 垃圾分类问答\n注：倡导自愿参与。\n\n---\n\n**【P3｜节能提醒】**\n来源：campus-green-02\n画面：关灯、节水示意\n文案：\n- 随手关灯\n- 节水提醒\n- 节能海报征集\n\n---\n\n**【P4｜说明与提醒】**\n- 以上为合成活动资料\n- 不代表真实成效或数据\n- 不展示实测节能百分比\n\n---\n\n**【P5｜结语】**\n欢迎自愿参与，从身边小事做起。\n\n**待审确认：** 是否需要补充每页字数限制或配图比例？",
+                "generator": "deepseek-flash"
+              }
+            ],
+            "estimate": {
+              "accounting_version": "2",
+              "phase": "saved",
+              "currency": "模拟单位",
+              "cents_per_unit": 100,
+              "format": "social_post",
+              "script_ids": [
+                "social_post-5ea618ebd4719176"
+              ],
+              "dependency_fingerprint": "7c5e7b8b9da2d4fca912256dbd45e179adb7ec4b136cd5fefbc63a172a731232",
+              "planned_production_cents": 575,
+              "planned_review_cents": 50,
+              "planned_publish_cents": 50,
+              "actual_tool_cost_cents": 200,
+              "pending_tool_cost_cents": 0,
+              "pending_tools": [],
+              "estimated_total_cents": 875,
+              "budget_cents": 1000,
+              "elapsed_planning_minutes": 12,
+              "pending_tool_minutes": 0,
+              "production_minutes": 30,
+              "review_minutes": 15,
+              "publish_minutes": 10,
+              "estimated_minutes": 67,
+              "estimated_remaining_minutes": 55,
+              "parallel_execution": false,
+              "concurrency": 3,
+              "started_at": "2030-01-15T09:00:00+08:00",
+              "expected_completion_at": "2030-01-15T10:07:00+08:00",
+              "deadline": "2030-01-15T18:00:00+08:00",
+              "feasible": true,
+              "budget_gap_cents": 0,
+              "time_gap_minutes": 0
+            },
+            "saved": {
+              "saved": true,
+              "path": "examples/runs/cloud-20261101T030800Z-e50097bb/cloud-normal/plans/normal-001/v1.json",
+              "version": 1,
+              "estimate": {
+                "accounting_version": "2",
+                "phase": "saved",
+                "currency": "模拟单位",
+                "cents_per_unit": 100,
+                "format": "social_post",
+                "script_ids": [
+                  "social_post-5ea618ebd4719176"
+                ],
+                "dependency_fingerprint": "7c5e7b8b9da2d4fca912256dbd45e179adb7ec4b136cd5fefbc63a172a731232",
+                "planned_production_cents": 575,
+                "planned_review_cents": 50,
+                "planned_publish_cents": 50,
+                "actual_tool_cost_cents": 200,
+                "pending_tool_cost_cents": 0,
+                "pending_tools": [],
+                "estimated_total_cents": 875,
+                "budget_cents": 1000,
+                "elapsed_planning_minutes": 12,
+                "pending_tool_minutes": 0,
+                "production_minutes": 30,
+                "review_minutes": 15,
+                "publish_minutes": 10,
+                "estimated_minutes": 67,
+                "estimated_remaining_minutes": 55,
+                "parallel_execution": false,
+                "concurrency": 3,
+                "started_at": "2030-01-15T09:00:00+08:00",
+                "expected_completion_at": "2030-01-15T10:07:00+08:00",
+                "deadline": "2030-01-15T18:00:00+08:00",
+                "feasible": true,
+                "budget_gap_cents": 0,
+                "time_gap_minutes": 0
+              }
+            }
+          },
+          "actual_tool_cost_cents": 200,
+          "elapsed_planning_minutes": 12,
+          "execution_wall_seconds": 11.472354,
+          "trace_path": "examples\\traces\\cloud-20261101T030800Z-e50097bb\\normal-001-v1-aef436afbfd84b84a6db540ae01264f5.jsonl",
+          "step_count": 6,
+          "tool_call_count": 8,
+          "errors": [
+            {
+              "tool": "estimate_cost",
+              "code": "unsafe_batch",
+              "error": "估算、保存或结束动作必须单独执行"
+            },
+            {
+              "tool": "estimate_cost",
+              "code": "unsafe_batch",
+              "error": "估算、保存或结束动作必须单独执行"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

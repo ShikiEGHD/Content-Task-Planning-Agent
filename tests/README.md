@@ -1,15 +1,12 @@
-# 测试目录
+# 可执行测试
 
-当前只有测试计划，尚无可执行测试，也没有通过记录。路线和场景见 ../docs/00-roadmap.md 与 ../docs/03-evaluation.md。
+框架：unittest。当前 18 项测试通过，原始结果在 examples/test-results/unittest-final.txt。
 
-拟覆盖：
+- test_contracts：必填字段、金额精度、时区和工具 schema。
+- test_accounting：费用字段、完整总额、预算/时间临界值、多脚本计费/工期、未知依赖、保存前成本/内容/时间变化、实际线程并发和失败计费/耗时。
+- test_cli_encoding：GBK 环境变量下 stdout 和 --output 仍为 UTF-8；BOM 输入；缺字段错误非空 JSON；无时区 now 拒绝。
+- test_graph_mock：降本流程精确总额/工期、错误状态、自动版本、旧缓存隔离、重复执行不再收费/写 Trace、执行上限保留素材。
+- test_storage：原子 JSON 保存、版本索引、拒绝覆盖已有方案。
 
-- 必填字段：缺预算、缺截止时间分别测试；缺主题也应被识别。
-- 成本与耗时：费用明细求和、预算边界、截止时间边界、重复计费防护。
-- 工具错误：失败不得记为成功；成功素材和脚本能被保留或按依赖正确失效。
-- LangGraph 执行：模型收到工具结果、能修改动作，达到调用/步数上限时返回未完成。
-- 重复执行：同一任务的业务副作用幂等，避免重复保存；进程重启的支持边界需说明。
-- Mock：固定输入下可复现，但明确这类测试不证明真实模型决策。
-- 云端模型：单独手动或可选集成验证，不让默认离线测试依赖密钥和网络。
-
-测试框架建议比较 pytest（用例组织和参数化方便，有额外依赖）与 unittest（标准库、额外依赖少，样板较多），由用户决定后实施。
+`.venv/Scripts/python.exe -m unittest discover -s tests -v` 无需 Key 或网络。
+实际 CLI 多场景另用 scripts/run_evidence.py --mode mock，真实云端用 --mode cloud 单列，不归入默认离线测试。

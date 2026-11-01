@@ -1,0 +1,96 @@
+{
+  "accounting_version": "2",
+  "mode": "cloud",
+  "model": "deepseek-flash",
+  "currency": "模拟单位",
+  "cents_per_unit": 100,
+  "status": "incomplete",
+  "reason_code": "tool_call_limit",
+  "reason": "达到工具调用上限，保留已完成结果",
+  "task_id": "failure-001",
+  "version": 1,
+  "run_id": "acaee0af76fb46489f08a56cf4ae77a6",
+  "plan": {
+    "assets": [
+      {
+        "id": "campus-green-01",
+        "tags": [
+          "校园",
+          "环保",
+          "低碳"
+        ],
+        "title": "校园减塑活动资料",
+        "content": "合成资料：设置自带水杯打卡、旧物交换与垃圾分类问答，倡导自愿参与。",
+        "limitations": "仅为合成活动资料，不代表真实成效或数据。"
+      },
+      {
+        "id": "campus-green-02",
+        "tags": [
+          "校园",
+          "环保",
+          "节能"
+        ],
+        "title": "宿舍节能活动资料",
+        "content": "合成资料：组织随手关灯、节水提醒和节能海报征集；避免夸大节约数据。",
+        "limitations": "禁止编造实测节能百分比。"
+      }
+    ],
+    "scripts": [],
+    "estimate": null,
+    "saved": null
+  },
+  "actual_tool_cost_cents": 375,
+  "elapsed_planning_minutes": 30,
+  "execution_wall_seconds": 12.494899,
+  "trace_path": "examples\\traces\\cloud-20261101T030800Z-e50097bb\\failure-001-v1-acaee0af76fb46489f08a56cf4ae77a6.jsonl",
+  "step_count": 11,
+  "tool_call_count": 12,
+  "errors": [
+    {
+      "tool": "generate_script",
+      "code": "injected_failure",
+      "error": "故障注入：generate_script"
+    },
+    {
+      "tool": "generate_script",
+      "code": "injected_failure",
+      "error": "故障注入：generate_script"
+    },
+    {
+      "tool": "generate_script",
+      "code": "injected_failure",
+      "error": "故障注入：generate_script"
+    },
+    {
+      "tool": "generate_script",
+      "code": "injected_failure",
+      "error": "故障注入：generate_script"
+    },
+    {
+      "tool": "generate_script",
+      "code": "injected_failure",
+      "error": "故障注入：generate_script"
+    },
+    {
+      "tool": "generate_script",
+      "code": "injected_failure",
+      "error": "故障注入：generate_script"
+    },
+    {
+      "tool": "generate_script",
+      "code": "injected_failure",
+      "error": "故障注入：generate_script"
+    },
+    {
+      "tool": "generate_script",
+      "code": "injected_failure",
+      "error": "故障注入：generate_script"
+    },
+    {
+      "tool": "generate_script",
+      "code": "injected_failure",
+      "error": "故障注入：generate_script"
+    }
+  ],
+  "cache_hit": false
+}

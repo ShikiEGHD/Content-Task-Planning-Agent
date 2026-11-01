@@ -32,7 +32,7 @@ class MockModel:
         errors = snapshot.get("errors") or []
         if errors and errors[-1].get("tool") == "generate_script":
             return Decision([Call("mock-stop-failure", "finish_task", {
-                "summary": "脚本生成工具连续失败，保留失败记录并停止重试",
+                "summary": "脚本生成工具失败，保留已成功的素材和失败记录并停止重试",
                 "reason": "观察到脚本生成失败，继续重试不会产生新的可用结果",
             })])
         if snapshot.get("tool_calls", 0) == 0:
@@ -53,7 +53,7 @@ class MockModel:
             })])
         if not snapshot.get("estimate"):
             return Decision([Call("mock-estimate", "estimate_cost", {
-                "script_ids": [script["id"] for script in snapshot["scripts"]],
+                "script_ids": [snapshot["scripts"][-1]["id"]],
                 "reason": "根据初始方案计算费用和并行工期",
             })])
         estimate = snapshot["estimate"]
@@ -63,7 +63,7 @@ class MockModel:
                 return Decision([Call("mock-social", "generate_script", {
                     "asset_ids": [asset["id"] for asset in snapshot["assets"][:2]],
                     "format": "social_post",
-                    "reason": "观察到精制视频超出预算，改用较低成本的图文短帖",
+                    "reason": "观察到精制视频预算或工期不可行，尝试较低成本且较快的图文短帖",
                 })])
             return Decision([Call("mock-stop-budget", "finish_task", {
                 "summary": "替代内容形式仍不可行",
@@ -121,6 +121,11 @@ class DeepSeekClient:
             "只能调用提供的工具；工具结果可能失败或超预算。"
             "优先保留成功结果，观察后再调整计划。完成只能在保存成功后。"
             "每个工具调用参数必须带 reason，reason 只写一句可核验依据，不写内部推理。"
+            "预算币种固定为模拟单位，100分=1模拟单位，不是人民币、美元或API账单。"
+            "estimate_cost的script_ids是最终实际执行的脚本，选多个会合计多个制作费；"
+            "候选方案应分别估算，不要把候选全选当作仅执行最后一个。"
+            "估算包含已经发生的全部工具费、本次估算费和待保存费用，以及制作、审核、发布费。"
+            "只能使用已检索素材；估算、保存、结束必须单独调用；保存成功后只能结束。"
         )
         response = self.client.chat.completions.create(
             model=self.model_name,

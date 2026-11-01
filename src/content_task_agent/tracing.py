@@ -17,13 +17,16 @@ class TraceWriter:
     def write(self, *, step: int, event: str, action: str, status: str,
               reason: str = "", tool_args: dict | None = None,
               result_summary: dict | None = None, charged_cents: int = 0,
-              next_action: str = "") -> None:
+              next_action: str = "", cumulative_cost_cents: int = 0,
+              elapsed_planning_minutes: int = 0) -> None:
         record: dict[str, Any] = {
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "run_id": self.run_id, "task_id": self.task_id, "mode": self.mode,
             "step": step, "event": event, "action": action, "status": status,
             "tool_args": tool_args or {}, "result_summary": result_summary or {},
             "charged_cents": charged_cents, "next_action": next_action,
+            "reason": reason, "cumulative_cost_cents": cumulative_cost_cents,
+            "elapsed_planning_minutes": elapsed_planning_minutes,
         }
         with self.path.open("a", encoding="utf-8") as stream:
             json.dump(record, stream, ensure_ascii=False, separators=(",", ":"))

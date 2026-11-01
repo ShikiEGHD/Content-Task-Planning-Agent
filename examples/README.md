@@ -1,18 +1,17 @@
-# 复现与验证材料
+# 实际输入、输出和 Trace
 
-inputs/、outputs/、traces/、test-results/ 中保存的是实际 Mock 运行材料；文件名按场景区分。
+当前验收采用计算版本 v2（2026-11-01）。入口为 [离线清单](test-results/mock-evidence.json) 和 [云端清单](test-results/cloud-evidence.json)，记录 15 个 Mock + 2 个用户实测 cloud CLI 命令、退出码、run_id、Trace 和哈希。
+当前输出位于 outputs/，全部是程序 --output 直接写出的 UTF-8 JSON；缺字段结果也非空。
 
-至少提交三组输入、实际输出与运行记录，覆盖正常、信息或资料不足、工具失败，并覆盖题目全部必须验收点。建议独立保存各场景以便核验。
+- inputs/：正常、缺预算/截止时间、工具失败、素材不足、紧迫截止时间、预算精确/差 1 分及版本变化。
+- outputs/：当前实际结果；normal 与 normal-venv 为兼容旧文件名的独立运行，tool-failure 与 tool-failure-verified 同理。
+- runs/mock-批次/：该批真实保存方案和索引；同一 idempotency 子目录复用以验证缓存和版本。
+- traces/mock-批次/：实际 JSONL；模型 reason、工具返回和累计费用/分钟可核验。
+- test-results/：测试文本、场景清单、该批 CLI stdout/stderr。
 
-目录用途：
+v1 历史材料：旧 runtime-*（包括 runtime-cloud 和 runtime-cloud-failure）、traces 顶层旧 JSONL。
+其中旧云端正常记录有计算错误，保留供追溯，不能用来证明 v2 预算/工期通过。历史云端摘要中“美元/美分”为错误单位，实际规则为模拟单位。
 
-- inputs/：输入、场景配置及其说明。
-- outputs/：实际最终结果、已保存方案，或未完成状态与缺口。
-- traces/：实际执行记录，建议 JSONL；不得预先填写成功日志。
-- test-results/：测试命令、退出码、统计及原始结果（文本或 JSON）。
-
-同一次运行的文件通过 run_id、task_id 和场景名关联；区分 cloud 与 mock。保存模型名、运行模式、依赖版本、时间、命令和适用的 commit SHA。不得保存密钥、认证头或隐私数据。
-
-Trace 包含步骤序号、动作/工具、参数、返回摘要、状态、后续动作、简要决策依据和累计费用；不索取或保存模型内部思维链。
-
-真实模型至少应保留两条不同的工具结果驱动决策路径。Mock 结果只证明流程，不能混写为云端模型效果。评估结论从 ../docs/03-evaluation.md 链接到实际文件。
+重跑：`.venv/Scripts/python.exe scripts/run_evidence.py --mode mock`；核验：`.venv/Scripts/python.exe scripts/check_evidence.py`。
+本机配置 Key 后可用 --mode cloud 重跑。当前云端正常 875 分/67 分钟；故障 375 分/30 规划分钟、12 次调用上限。初次核验清单保留在对应批次的 initial-manifest.json；离线复核修正核验规则，没有修改原输出或调用 API。
+哈希按 UTF-8/LF 规范化后计算，避免 Git autocrlf 造成跨平台误报。

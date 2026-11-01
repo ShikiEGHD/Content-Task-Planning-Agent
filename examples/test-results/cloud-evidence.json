@@ -1,0 +1,83 @@
+{
+  "generated_at": "2026-11-01T03:08:29.930910+00:00",
+  "mode": "cloud",
+  "accounting_version": "2",
+  "source_sha256": "01c2a5d13e90dd347dd1443aff91770225fa76815d262a1bf90cc225a1db28a3",
+  "base_commit": "e70b8f324ebb42cfb6b2379f1b7fd2021367ae3e",
+  "python": "3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]",
+  "dependencies": {
+    "langgraph": "1.2.10",
+    "openai": "3.42.0"
+  },
+  "fixed_now": "2030-01-15T09:00:00+08:00",
+  "runtime_root": "examples/runs/cloud-20261101T030800Z-e50097bb",
+  "all_verified": true,
+  "runs": [
+    {
+      "name": "cloud-normal",
+      "command": [
+        "G:\\Content-Task-Planning-Agent\\.venv\\Scripts\\python.exe",
+        "-m",
+        "content_task_agent",
+        "--input",
+        "examples/inputs/normal.json",
+        "--mode",
+        "cloud",
+        "--runtime-dir",
+        "examples\\runs\\cloud-20261101T030800Z-e50097bb\\cloud-normal",
+        "--trace-dir",
+        "examples\\traces\\cloud-20261101T030800Z-e50097bb",
+        "--now",
+        "2030-01-15T09:00:00+08:00",
+        "--output",
+        "examples\\outputs\\cloud-normal.json"
+      ],
+      "input": "examples/inputs/normal.json",
+      "output": "examples/outputs/cloud-normal.json",
+      "exit_code": 0,
+      "status": "completed",
+      "reason_code": "model_finished",
+      "run_id": "aef436afbfd84b84a6db540ae01264f5",
+      "trace": "examples\\traces\\cloud-20261101T030800Z-e50097bb\\normal-001-v1-aef436afbfd84b84a6db540ae01264f5.jsonl",
+      "verified": true,
+      "expected_exit_code": 0,
+      "output_sha256": "104a7c55fc78326eeffbd94ca57ff698252cc112abacb9a9836d4823bc2d74b0"
+    },
+    {
+      "name": "cloud-failure",
+      "command": [
+        "G:\\Content-Task-Planning-Agent\\.venv\\Scripts\\python.exe",
+        "-m",
+        "content_task_agent",
+        "--input",
+        "examples/inputs/tool-failure.json",
+        "--mode",
+        "cloud",
+        "--runtime-dir",
+        "examples\\runs\\cloud-20261101T030800Z-e50097bb\\cloud-failure",
+        "--trace-dir",
+        "examples\\traces\\cloud-20261101T030800Z-e50097bb",
+        "--now",
+        "2030-01-15T09:00:00+08:00",
+        "--output",
+        "examples\\outputs\\cloud-failure.json",
+        "--fail-tool",
+        "generate_script"
+      ],
+      "input": "examples/inputs/tool-failure.json",
+      "output": "examples/outputs/cloud-failure.json",
+      "exit_code": 2,
+      "status": "incomplete",
+      "reason_code": "tool_call_limit",
+      "run_id": "acaee0af76fb46489f08a56cf4ae77a6",
+      "trace": "examples\\traces\\cloud-20261101T030800Z-e50097bb\\failure-001-v1-acaee0af76fb46489f08a56cf4ae77a6.jsonl",
+      "verified": true,
+      "expected_exit_code": 2,
+      "output_sha256": "02367331b08ceb5e5bc0e68b464dbc248bfa9b76b8f3078af6161f6db6750f1b"
+    }
+  ],
+  "source_hash_scheme": "normalized-v2",
+  "revalidated_at": "2026-11-01T03:11:57.288974+00:00",
+  "revalidation_note": "Offline verification of original output hashes and current source; safety-limit termination is a valid incomplete result, not model-initiated recovery. No API calls or output edits.",
+  "output_hash_scheme": "utf8-lf-v1"
+}

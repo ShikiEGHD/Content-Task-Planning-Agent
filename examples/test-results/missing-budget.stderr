@@ -1,1 +1,5 @@
-{"status": "incomplete", "reason_code": "input_or_setup_error", "reason": "ȱ�ٱ����ֶ�: budget"}
+{
+  "status": "incomplete",
+  "reason_code": "input_or_setup_error",
+  "reason": "缺少必填字段: budget"
+}

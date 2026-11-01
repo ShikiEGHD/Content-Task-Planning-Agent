@@ -120,7 +120,7 @@ SCHEMAS = {
         },
     },
     "estimate_cost": {
-        "description": "选定已有脚本估算活动执行成本、并行工期、预算/时间缺口；报价不直接扣费。",
+        "description": "估算要实际执行的脚本，多个 ID 合计制作费；候选需分别估算。含累计工具费、本次估算与待保存费、制作审核发布费及依赖工期。",
         "properties": {"script_ids": {"type": "array", "items": {"type": "string"}}},
     },
     "save_plan": {

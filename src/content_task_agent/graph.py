@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import time
 from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -10,10 +11,11 @@ from uuid import uuid4
 
 from langgraph.graph import END, START, StateGraph
 
-from .contracts import Call, Config, Decision, Request, digest, validate_call
+from .accounting import ACCOUNTING_VERSION
+from .contracts import Call, Config, Request, digest, validate_call
 from .models import ModelClient, ModelError
 from .storage import JsonStore, StorageError
-from .tools import ToolContext, ToolFailure, execute_calls
+from .tools import ToolContext, ToolFailure, batch_minutes, execute_calls
 from .tracing import TraceWriter
 
 
@@ -21,7 +23,7 @@ def _summary(value: Any, limit: int = 500) -> Any:
     if isinstance(value, str):
         return value[:limit]
     if isinstance(value, dict):
-        return {key: _summary(item, limit) for key, item in list(value.items())[:20]
+        return {key: _summary(item, limit) for key, item in value.items()
                 if key not in {"content"}}
     if isinstance(value, list):
         return [_summary(item, limit) for item in value[:10]]
@@ -43,6 +45,7 @@ def initial_state(request: Request, config: Config, version: int, run_id: str,
         "step": 0, "tool_calls": 0, "assets": [], "scripts": [], "estimate": None,
         "saved": None, "events": [], "errors": [], "actual_cost_cents": 0,
         "total_tool_minutes": 0, "final": None, "last_results": [], "last_decision": None,
+        "wall_started": time.perf_counter(),
     }
 
 
@@ -101,6 +104,9 @@ class TaskGraph:
             "scripts": _summary(state["scripts"]), "estimate": _summary(state["estimate"]),
             "saved": state["saved"], "last_results": _summary(state["last_results"]),
             "errors": _summary(state["errors"]), "actual_cost_cents": state["actual_cost_cents"],
+            "elapsed_planning_minutes": state["total_tool_minutes"],
+            "started_at": state["now"], "accounting_version": ACCOUNTING_VERSION,
+            "tool_catalog": _load_json(Path(state["catalog_path"])),
             "limits": {"max_steps": state["config"]["max_steps"],
                        "max_tool_calls": state["config"]["max_tool_calls"]},
         }
@@ -121,8 +127,10 @@ class TaskGraph:
             decision = self.client.decide(snapshot)
             for call in decision.calls:
                 validate_call(call)
+            if len({call.id for call in decision.calls}) != len(decision.calls):
+                raise ValueError("同批工具 call_id 不得重复")
         except (ModelError, ValueError, KeyError, TypeError) as exc:
-            state["status"] = "incomplete"
+            state["status"] = "completed" if state.get("saved") else "incomplete"
             state["errors"].append({"code": "model_decision_failed", "error": str(exc)})
             state["final"] = {"status": state["status"], "reason_code": "model_error",
                               "reason": str(exc)}
@@ -130,7 +138,7 @@ class TaskGraph:
                         result={"error": str(exc)})
             return state
         if not decision.calls:
-            state["status"] = "incomplete"
+            state["status"] = "completed" if state.get("saved") else "incomplete"
             state["final"] = {"status": state["status"], "reason_code": "model_stopped",
                               "reason": decision.stop_reason or "模型没有选择工具"}
             self._trace(state, "model", "finish_task", "succeeded",
@@ -158,16 +166,24 @@ class TaskGraph:
             plan_dir=self.state_root, fail_tools=set(state["fail_tools"]),
             clock=datetime.fromisoformat(state["now"]),
             concurrency=state["config"]["concurrency"],
+            elapsed_minutes=state["total_tool_minutes"], available_assets=state["assets"],
         )
         plan = {"request": state["request"], "version": state["version"],
                 "assets": state["assets"], "scripts": state["scripts"],
                 "estimate": state["estimate"], "actual_cost_cents": state["actual_cost_cents"],
-                "events": state["events"]}
+                "events": state["events"], "elapsed_planning_minutes": state["total_tool_minutes"]}
         try:
-            results = execute_calls(context, calls, plan, state["actual_cost_cents"])
+            if state.get("saved") and any(call.name != "finish_task" for call in calls):
+                results = [{"call_id": call.id, "tool": call.name, "status": "failed",
+                            "error_code": "plan_frozen", "error": "方案已保存，只允许结束任务",
+                            "charged_cents": 0, "duration_minutes": 0} for call in calls]
+            else:
+                results = execute_calls(context, calls, plan, state["actual_cost_cents"])
         except (ToolFailure, StorageError, ValueError) as exc:
-            results = [{"call_id": "batch", "tool": "batch", "status": "failed",
-                        "error_code": "batch_failed", "error": str(exc), "charged_cents": 0}]
+            results = [{"call_id": call.id, "tool": call.name, "status": "failed",
+                        "error_code": "batch_failed", "error": str(exc), "charged_cents": 0,
+                        "duration_minutes": 0} for call in calls]
+        state["total_tool_minutes"] += batch_minutes(context, results)
         state["tool_calls"] += len(calls)
         state["last_results"] = []
         records_by_call_id = {record["call_id"]: record for record in results}
@@ -183,12 +199,14 @@ class TaskGraph:
                 if call.name == "search_materials":
                     state["assets"] = result["items"]
                 elif call.name == "generate_script":
-                    state["scripts"].append(result)
+                    if not any(script["id"] == result["id"] for script in state["scripts"]):
+                        state["scripts"].append(result)
                     state["estimate"] = None
                 elif call.name == "estimate_cost":
                     state["estimate"] = result
                 elif call.name == "save_plan":
                     state["saved"] = result
+                    state["estimate"] = result["estimate"]
                 elif call.name == "finish_task":
                     state["status"] = "incomplete" if state.get("saved") is None else "completed"
                     state["final"] = {"status": state["status"], "reason_code": "model_finished",
@@ -220,12 +238,19 @@ class TaskGraph:
                 state["final"] = {"status": state["status"], "reason_code": "incomplete",
                                   "reason": "任务未完成"}
         output = {
+            "accounting_version": ACCOUNTING_VERSION,
+            "mode": state["config"]["mode"], "model": self.client.model_name,
+            "currency": _load_json(Path(state["catalog_path"]))["currency"],
+            "cents_per_unit": _load_json(Path(state["catalog_path"]))["cents_per_unit"],
             "status": state["final"]["status"], "reason_code": state["final"]["reason_code"],
             "reason": state["final"]["reason"], "task_id": state["request"]["task_id"],
             "version": state["version"], "run_id": state["run_id"],
             "plan": {"assets": state["assets"], "scripts": state["scripts"],
                      "estimate": state["estimate"], "saved": state["saved"]},
             "actual_tool_cost_cents": state["actual_cost_cents"],
+            "elapsed_planning_minutes": state["total_tool_minutes"],
+            "execution_wall_seconds": round(time.perf_counter() - state["wall_started"], 6),
+            "trace_path": state["trace_path"],
             "step_count": state["step"], "tool_call_count": state["tool_calls"],
             "errors": state["errors"],
         }
@@ -241,14 +266,20 @@ class TaskGraph:
             step=state["step"], event=event, action=action, status=status, reason=reason,
             tool_args=tool_args, result_summary=result, charged_cents=charged_cents,
             next_action=state.get("last_decision", [{}])[0].get("name", "")
-            if state.get("last_decision") else "")
+            if state.get("last_decision") else "",
+            cumulative_cost_cents=state["actual_cost_cents"],
+            elapsed_planning_minutes=state["total_tool_minutes"])
 
 
 def run_task(request: Request, config: Config, client: ModelClient, *,
              root: Path, assets_path: Path, catalog_path: Path, trace_dir: Path,
              fail_tools: set[str] | None = None, now: datetime | None = None) -> dict[str, Any]:
     root = Path(root)
-    request_fingerprint = digest(request.payload())
+    request_fingerprint = digest({
+        "accounting_version": ACCOUNTING_VERSION, "request": request.payload(),
+        "config": asdict(config), "assets": _load_json(assets_path),
+        "catalog": _load_json(catalog_path), "fail_tools": sorted(fail_tools or set()),
+    })
     run_id = uuid4().hex
     with JsonStore(root).locked() as storage:
         version, cached = storage.open_version(request.task_id, request_fingerprint)
@@ -257,11 +288,13 @@ def run_task(request: Request, config: Config, client: ModelClient, *,
             cached["cache_hit"] = True
             return cached
         now = now or datetime.now(timezone.utc)
+        if now.tzinfo is None or now.utcoffset() is None:
+            raise ValueError("当前时间必须包含时区")
         trace_path = Path(trace_dir) / f"{request.task_id}-v{version}-{run_id}.jsonl"
-        client = client
         state = initial_state(request, config, version, run_id, trace_path,
                               assets_path, catalog_path, fail_tools or set(), now, client)
-        final_state = TaskGraph(client, storage, root).graph.invoke(state)
+        final_state = TaskGraph(client, storage, root).graph.invoke(
+            state, config={"recursion_limit": 2 * config.max_steps + 10})
         output = final_state["final_output"]
         output["cache_hit"] = False
         return output

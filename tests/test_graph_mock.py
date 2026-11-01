@@ -33,6 +33,9 @@ class GraphMockTests(unittest.TestCase):
         self.assertEqual(output["plan"]["estimate"]["format"], "social_post")
         self.assertGreaterEqual(len(output["plan"]["scripts"]), 2)
         self.assertFalse(output["cache_hit"])
+        self.assertEqual(output["actual_tool_cost_cents"], 225)
+        self.assertEqual(output["plan"]["estimate"]["estimated_total_cents"], 900)
+        self.assertEqual(output["plan"]["estimate"]["estimated_minutes"], 76)
 
     def test_tool_failure_is_recorded_and_not_success(self):
         output = self.run_case(self.request("fail-test"), fail_tools={"search_materials"})
@@ -56,3 +59,39 @@ class GraphMockTests(unittest.TestCase):
                               now=datetime(2030, 1, 1, tzinfo=timezone.utc))
             self.assertEqual(first["version"], 1)
             self.assertEqual(second["version"], 2)
+
+    def test_legacy_cache_is_not_reused_and_new_result_is_idempotent(self):
+        from src.content_task_agent.contracts import digest
+        from src.content_task_agent.storage import JsonStore
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            request = self.request("legacy")
+            with JsonStore(root / "runtime").locked() as store:
+                version, _ = store.open_version(request.task_id, digest(request.payload()))
+                store.update(request.task_id, version, {"status": "completed", "obsolete": True})
+            kwargs = dict(root=root / "runtime", assets_path=DATA / "assets.json",
+                          catalog_path=DATA / "tool_catalog.json", trace_dir=root / "traces",
+                          now=datetime(2030, 1, 1, tzinfo=timezone.utc))
+            current = run_task(request, Config(), MockModel(), **kwargs)
+            traces = list((root / "traces").glob("*.jsonl"))
+            cached = run_task(request, Config(), MockModel(), **kwargs)
+            self.assertEqual(current["version"], 2)
+            self.assertFalse(current["cache_hit"])
+            self.assertTrue(cached["cache_hit"])
+            self.assertEqual(cached["actual_tool_cost_cents"], current["actual_tool_cost_cents"])
+            self.assertEqual(traces, list((root / "traces").glob("*.jsonl")))
+            plan = json.loads(Path(current["plan"]["saved"]["path"]).read_text(encoding="utf-8"))
+            self.assertEqual(plan["actual_cost_cents"], current["actual_tool_cost_cents"])
+
+    def test_step_limit_stops_before_second_tool_and_preserves_materials(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            output = run_task(self.request("limit"), Config(max_steps=1), MockModel(),
+                              root=root / "runtime", assets_path=DATA / "assets.json",
+                              catalog_path=DATA / "tool_catalog.json", trace_dir=root / "traces")
+            self.assertEqual(output["reason_code"], "step_limit")
+            self.assertEqual(output["actual_tool_cost_cents"], 50)
+            self.assertEqual(output["elapsed_planning_minutes"], 2)
+            self.assertTrue(output["plan"]["assets"])
+            self.assertIsNone(output["plan"]["saved"])

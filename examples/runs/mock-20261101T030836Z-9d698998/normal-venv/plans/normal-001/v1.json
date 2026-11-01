@@ -1,0 +1,268 @@
+{
+  "request": {
+    "task_id": "normal-001",
+    "topic": "校园环保",
+    "budget": 10.0,
+    "deadline": "2030-01-15T18:00:00+08:00"
+  },
+  "version": 1,
+  "assets": [
+    {
+      "id": "campus-green-01",
+      "tags": [
+        "校园",
+        "环保",
+        "低碳"
+      ],
+      "title": "校园减塑活动资料",
+      "content": "合成资料：设置自带水杯打卡、旧物交换与垃圾分类问答，倡导自愿参与。",
+      "limitations": "仅为合成活动资料，不代表真实成效或数据。"
+    },
+    {
+      "id": "campus-green-02",
+      "tags": [
+        "校园",
+        "环保",
+        "节能"
+      ],
+      "title": "宿舍节能活动资料",
+      "content": "合成资料：组织随手关灯、节水提醒和节能海报征集；避免夸大节约数据。",
+      "limitations": "禁止编造实测节能百分比。"
+    }
+  ],
+  "scripts": [
+    {
+      "id": "premium_video-e3b762614c5b90ce",
+      "format": "premium_video",
+      "asset_ids": [
+        "campus-green-01",
+        "campus-green-02"
+      ],
+      "content": "主题：校园环保\n形式：精制视频\n素材：校园减塑活动资料；宿舍节能活动资料\n开场：提出一个与主题相关的具体问题。\n主体：引用合成素材中的事实，给出可执行的小步骤。\n结尾：邀请用户自愿参与并注明内容为活动建议。",
+      "generator": "mock-deterministic-v1"
+    },
+    {
+      "id": "social_post-0b370cd0fb3bfc8d",
+      "format": "social_post",
+      "asset_ids": [
+        "campus-green-01",
+        "campus-green-02"
+      ],
+      "content": "主题：校园环保\n形式：图文短帖\n素材：校园减塑活动资料；宿舍节能活动资料\n开场：提出一个与主题相关的具体问题。\n主体：引用合成素材中的事实，给出可执行的小步骤。\n结尾：邀请用户自愿参与并注明内容为活动建议。",
+      "generator": "mock-deterministic-v1"
+    }
+  ],
+  "estimate": {
+    "accounting_version": "2",
+    "phase": "saved",
+    "currency": "模拟单位",
+    "cents_per_unit": 100,
+    "format": "social_post",
+    "script_ids": [
+      "social_post-0b370cd0fb3bfc8d"
+    ],
+    "dependency_fingerprint": "89025854891a77f2808eafa138b028f067c6d88f30cb4ca31efb86de3e22ea52",
+    "planned_production_cents": 575,
+    "planned_review_cents": 50,
+    "planned_publish_cents": 50,
+    "actual_tool_cost_cents": 225,
+    "pending_tool_cost_cents": 0,
+    "pending_tools": [],
+    "estimated_total_cents": 900,
+    "budget_cents": 1000,
+    "elapsed_planning_minutes": 21,
+    "pending_tool_minutes": 0,
+    "production_minutes": 30,
+    "review_minutes": 15,
+    "publish_minutes": 10,
+    "estimated_minutes": 76,
+    "estimated_remaining_minutes": 55,
+    "parallel_execution": false,
+    "concurrency": 3,
+    "started_at": "2030-01-15T09:00:00+08:00",
+    "expected_completion_at": "2030-01-15T10:16:00+08:00",
+    "deadline": "2030-01-15T18:00:00+08:00",
+    "feasible": true,
+    "budget_gap_cents": 0,
+    "time_gap_minutes": 0
+  },
+  "actual_cost_cents": 225,
+  "events": [
+    {
+      "event": "validated",
+      "status": "succeeded"
+    },
+    {
+      "call_id": "mock-search",
+      "tool": "search_materials",
+      "status": "succeeded",
+      "result": {
+        "items": [
+          {
+            "id": "campus-green-01",
+            "tags": [
+              "校园",
+              "环保",
+              "低碳"
+            ],
+            "title": "校园减塑活动资料",
+            "content": "合成资料：设置自带水杯打卡、旧物交换与垃圾分类问答，倡导自愿参与。",
+            "limitations": "仅为合成活动资料，不代表真实成效或数据。"
+          },
+          {
+            "id": "campus-green-02",
+            "tags": [
+              "校园",
+              "环保",
+              "节能"
+            ],
+            "title": "宿舍节能活动资料",
+            "content": "合成资料：组织随手关灯、节水提醒和节能海报征集；避免夸大节约数据。",
+            "limitations": "禁止编造实测节能百分比。"
+          }
+        ],
+        "count": 2,
+        "query": "校园环保"
+      },
+      "charged_cents": 50,
+      "duration_minutes": 2,
+      "wall_seconds": 2.5e-05
+    },
+    {
+      "call_id": "mock-premium",
+      "tool": "generate_script",
+      "status": "succeeded",
+      "result": {
+        "id": "premium_video-e3b762614c5b90ce",
+        "format": "premium_video",
+        "asset_ids": [
+          "campus-green-01",
+          "campus-green-02"
+        ],
+        "content": "主题：校园环保\n形式：精制视频\n素材：校园减塑活动资料；宿舍节能活动资料\n开场：提出一个与主题相关的具体问题。\n主体：引用合成素材中的事实，给出可执行的小步骤。\n结尾：邀请用户自愿参与并注明内容为活动建议。",
+        "generator": "mock-deterministic-v1"
+      },
+      "charged_cents": 50,
+      "duration_minutes": 8,
+      "wall_seconds": 6.9e-05
+    },
+    {
+      "call_id": "mock-estimate",
+      "tool": "estimate_cost",
+      "status": "succeeded",
+      "result": {
+        "accounting_version": "2",
+        "phase": "quoted",
+        "currency": "模拟单位",
+        "cents_per_unit": 100,
+        "format": "premium_video",
+        "script_ids": [
+          "premium_video-e3b762614c5b90ce"
+        ],
+        "dependency_fingerprint": "3c1c0e0e56daa375f475d238d47da669d1de29eb30629b67f2ebf01e01122206",
+        "planned_production_cents": 1000,
+        "planned_review_cents": 50,
+        "planned_publish_cents": 50,
+        "actual_tool_cost_cents": 100,
+        "pending_tool_cost_cents": 50,
+        "pending_tools": [
+          "estimate_cost",
+          "save_plan"
+        ],
+        "estimated_total_cents": 1250,
+        "budget_cents": 1000,
+        "elapsed_planning_minutes": 10,
+        "pending_tool_minutes": 2,
+        "production_minutes": 120,
+        "review_minutes": 15,
+        "publish_minutes": 10,
+        "estimated_minutes": 157,
+        "estimated_remaining_minutes": 147,
+        "parallel_execution": false,
+        "concurrency": 3,
+        "started_at": "2030-01-15T09:00:00+08:00",
+        "expected_completion_at": "2030-01-15T11:37:00+08:00",
+        "deadline": "2030-01-15T18:00:00+08:00",
+        "feasible": false,
+        "budget_gap_cents": 250,
+        "time_gap_minutes": 0
+      },
+      "charged_cents": 25,
+      "duration_minutes": 1,
+      "wall_seconds": 0.000172
+    },
+    {
+      "call_id": "mock-social",
+      "tool": "generate_script",
+      "status": "succeeded",
+      "result": {
+        "id": "social_post-0b370cd0fb3bfc8d",
+        "format": "social_post",
+        "asset_ids": [
+          "campus-green-01",
+          "campus-green-02"
+        ],
+        "content": "主题：校园环保\n形式：图文短帖\n素材：校园减塑活动资料；宿舍节能活动资料\n开场：提出一个与主题相关的具体问题。\n主体：引用合成素材中的事实，给出可执行的小步骤。\n结尾：邀请用户自愿参与并注明内容为活动建议。",
+        "generator": "mock-deterministic-v1"
+      },
+      "charged_cents": 50,
+      "duration_minutes": 8,
+      "wall_seconds": 5.1e-05
+    },
+    {
+      "call_id": "mock-estimate",
+      "tool": "estimate_cost",
+      "status": "succeeded",
+      "result": {
+        "accounting_version": "2",
+        "phase": "quoted",
+        "currency": "模拟单位",
+        "cents_per_unit": 100,
+        "format": "social_post",
+        "script_ids": [
+          "social_post-0b370cd0fb3bfc8d"
+        ],
+        "dependency_fingerprint": "89025854891a77f2808eafa138b028f067c6d88f30cb4ca31efb86de3e22ea52",
+        "planned_production_cents": 575,
+        "planned_review_cents": 50,
+        "planned_publish_cents": 50,
+        "actual_tool_cost_cents": 175,
+        "pending_tool_cost_cents": 50,
+        "pending_tools": [
+          "estimate_cost",
+          "save_plan"
+        ],
+        "estimated_total_cents": 900,
+        "budget_cents": 1000,
+        "elapsed_planning_minutes": 19,
+        "pending_tool_minutes": 2,
+        "production_minutes": 30,
+        "review_minutes": 15,
+        "publish_minutes": 10,
+        "estimated_minutes": 76,
+        "estimated_remaining_minutes": 57,
+        "parallel_execution": false,
+        "concurrency": 3,
+        "started_at": "2030-01-15T09:00:00+08:00",
+        "expected_completion_at": "2030-01-15T10:16:00+08:00",
+        "deadline": "2030-01-15T18:00:00+08:00",
+        "feasible": true,
+        "budget_gap_cents": 0,
+        "time_gap_minutes": 0
+      },
+      "charged_cents": 25,
+      "duration_minutes": 1,
+      "wall_seconds": 0.000115
+    },
+    {
+      "tool": "save_plan",
+      "status": "succeeded",
+      "charged_cents": 25,
+      "duration_minutes": 1
+    }
+  ],
+  "elapsed_planning_minutes": 21,
+  "selected_script_ids": [
+    "social_post-0b370cd0fb3bfc8d"
+  ]
+}

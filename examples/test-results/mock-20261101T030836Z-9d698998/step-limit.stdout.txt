@@ -1,0 +1,50 @@
+{
+  "accounting_version": "2",
+  "mode": "mock",
+  "model": "mock-deterministic-v1",
+  "currency": "模拟单位",
+  "cents_per_unit": 100,
+  "status": "incomplete",
+  "reason_code": "step_limit",
+  "reason": "达到 Agent 步数上限，保留已完成结果",
+  "task_id": "normal-001",
+  "version": 1,
+  "run_id": "12e5221d63c7423480a8c718ab43f810",
+  "plan": {
+    "assets": [
+      {
+        "id": "campus-green-01",
+        "tags": [
+          "校园",
+          "环保",
+          "低碳"
+        ],
+        "title": "校园减塑活动资料",
+        "content": "合成资料：设置自带水杯打卡、旧物交换与垃圾分类问答，倡导自愿参与。",
+        "limitations": "仅为合成活动资料，不代表真实成效或数据。"
+      },
+      {
+        "id": "campus-green-02",
+        "tags": [
+          "校园",
+          "环保",
+          "节能"
+        ],
+        "title": "宿舍节能活动资料",
+        "content": "合成资料：组织随手关灯、节水提醒和节能海报征集；避免夸大节约数据。",
+        "limitations": "禁止编造实测节能百分比。"
+      }
+    ],
+    "scripts": [],
+    "estimate": null,
+    "saved": null
+  },
+  "actual_tool_cost_cents": 50,
+  "elapsed_planning_minutes": 2,
+  "execution_wall_seconds": 0.016869,
+  "trace_path": "examples\\traces\\mock-20261101T030836Z-9d698998\\normal-001-v1-12e5221d63c7423480a8c718ab43f810.jsonl",
+  "step_count": 1,
+  "tool_call_count": 1,
+  "errors": [],
+  "cache_hit": false
+}
